@@ -1,6 +1,8 @@
 require "navigable/version"
+require "navigable/application"
 
 module Navigable
-  class Error < StandardError; end
-  # Your code goes here...
+  def self.application
+    @application ||= Application.new
+  end
 end
