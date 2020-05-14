@@ -2,16 +2,20 @@ PATH
   remote: .
   specs:
     navigable (0.1.0)
-      http_router
+      http_router (~> 0.11)
+      rack-bodyparser (~> 1.0)
 
 GEM
   remote: https://rubygems.org/
   specs:
     diff-lcs (1.3)
+    docile (1.3.2)
     http_router (0.11.2)
       rack (>= 1.0.0)
       url_mount (~> 0.2.1)
     rack (2.2.2)
+    rack-bodyparser (1.0.0)
+      rack
     rake (12.3.3)
     rspec (3.9.0)
       rspec-core (~> 3.9.0)
@@ -26,6 +30,12 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.9.0)
     rspec-support (3.9.2)
+    rspec_junit_formatter (0.4.1)
+      rspec-core (>= 2, < 4, != 2.12.0)
+    simplecov (0.18.5)
+      docile (~> 1.1)
+      simplecov-html (~> 0.11)
+    simplecov-html (0.12.2)
     url_mount (0.2.1)
       rack
 
@@ -33,9 +43,12 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bundler (~> 2.0)
   navigable!
   rake (~> 12.0)
   rspec (~> 3.0)
+  rspec_junit_formatter (~> 0.4)
+  simplecov (~> 0.16)
 
 BUNDLED WITH
    2.1.2
