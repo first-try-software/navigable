@@ -12,6 +12,10 @@ class RouterParamsCommand < Command
   def initialize(id:); end
 end
 
+class RackRequestParamsCommand < Command
+  def initialize(search:); end
+end
+
 class ParsedBodyParamsCommand < Command
   def initialize(title:, description:); end
 end
@@ -24,8 +28,11 @@ end
 
 RSpec.describe Navigable::Routable do
   describe '.call' do
-    let(:env) { { 'router.params' => router_params, 'parsed_body' => parsed_body } }
+    let(:env) { { 'router.request' => router_request, 'router.params' => router_params, 'parsed_body' => parsed_body } }
 
+    let(:router_request) { instance_double(HttpRouter::Request, rack_request: rack_request) }
+    let(:rack_request) { instance_double(Rack::Request, params: rack_request_params) }
+    let(:rack_request_params) { {} }
     let(:router_params) { {} }
     let(:parsed_body) { {} }
 
@@ -64,6 +71,22 @@ RSpec.describe Navigable::Routable do
         it 'calls the configured method on the command' do
           expect(perform_command).to have_received(:perform).with(no_args)
         end
+      end
+    end
+
+    context 'when there are rack request params (query string and form data)' do
+      subject(:call) { RackRequestParamsCommand.call(env) }
+
+      let(:rack_request_params) { { search: 'toast' } }
+
+      before do
+        allow(RackRequestParamsCommand).to receive(:new).and_call_original
+
+        call
+      end
+
+      it 'instantiates a command' do
+        expect(RackRequestParamsCommand).to have_received(:new).with(search: 'toast')
       end
     end
 
