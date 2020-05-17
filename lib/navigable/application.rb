@@ -1,5 +1,3 @@
-require 'http_router'
-
 module Navigable
   class Application
     def initialize

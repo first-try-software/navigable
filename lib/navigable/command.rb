@@ -1,5 +1,19 @@
 module Navigable
-  module Routable
+  module Command
+    EXECUTE_NOT_IMPLEMENTED_MESSAGE = 'Class must implement `execute` method or configure an alternative with `responds_with_method`.'
+
+    def self.extended(base)
+      base.class_eval do
+        def render(**params)
+          Response.new(params)
+        end
+
+        def execute
+          raise NotImplementedError.new(EXECUTE_NOT_IMPLEMENTED_MESSAGE)
+        end
+      end
+    end
+
     def inherited(child)
       child.responds_with_method(@responds_with_method) if @responds_with_method
     end
@@ -9,7 +23,9 @@ module Navigable
     end
 
     def call(env)
-      self.new(**params(env)).public_send(@responds_with_method || :execute)
+      response = self.new(params(env)).public_send(@responds_with_method || :execute)
+      raise InvalidResponse unless response.is_a?(Navigable::Response)
+      response.to_rack_response
     end
 
     def params(env)

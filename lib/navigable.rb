@@ -1,14 +1,17 @@
 require 'rack'
 require 'rack/bodyparser'
+require 'http_router'
+require 'json'
 require 'navigable/version'
 require 'navigable/application'
-require 'navigable/routable'
+require 'navigable/response'
+require 'navigable/command'
 
 module Navigable
   def self.application
     @application ||= Rack::Builder.new(app) do
       use Rack::BodyParser, :parsers => {
-        'application/json' => proc { |data| JSON.parse data }
+        'application/json' => proc { |data| JSON.parse(data) }
       }
     end
   end
