@@ -7,6 +7,10 @@ Navigable is an opinionated, Rack-based request router that connects restful URI
 * Add `root` resource support
 * Allow support for `only: [:index, :show]` in resources
 * Add a rake task to display resources: `rake resources`
+* Consider adding a generator
+  - new app
+  - new resource
+  - new resource in a namespace
 * Support .json or .html from url
 * Provide headers to client in case they need them (like for auth)
 * Allow people to add their own middleware
@@ -46,11 +50,11 @@ end
 This will declare five routes. View them by running `rake resources`:
 
 ```
-   GET /posts       =>   Posts::Index  (missing)
-   GET /posts/:id   =>   Posts::Show   (missing)
-  POST /posts       =>   Posts::Create (missing)
-   PUT /posts/:id   =>   Posts::Update (missing)
-DELETE /posts/:id   =>   Posts::Delete (missing)
+     GET /posts       =>   Posts::Index  (missing)
+     GET /posts/:id   =>   Posts::Show   (missing)
+    POST /posts       =>   Posts::Create (missing)
+     PUT /posts/:id   =>   Posts::Update (missing)
+  DELETE /posts/:id   =>   Posts::Delete (missing)
 ```
 
 Next, declare the five missing classes listed above...
@@ -171,16 +175,16 @@ end
 This will declare five more routes. View them by running `rake resources`:
 
 ```
-   GET /posts                          =>   Posts::Index
-   GET /posts/:id                      =>   Posts::Show
-  POST /posts                          =>   Posts::Create
-   PUT /posts/:id                      =>   Posts::Update
-DELETE /posts/:id                      =>   Posts::Delete
-   GET /posts/:posts_id/comments       =>   Posts::Comments::Index  (missing)
-   GET /posts/:posts_id/comments/:id   =>   Posts::Comments::Show   (missing)
-  POST /posts/:posts_id/comments       =>   Posts::Comments::Create (missing)
-   PUT /posts/:posts_id/comments/:id   =>   Posts::Comments::Update (missing)
-DELETE /posts/:posts_id/comments/:id   =>   Posts::Comments::Delete (missing)
+     GET /posts                          =>   Posts::Index
+     GET /posts/:id                      =>   Posts::Show
+    POST /posts                          =>   Posts::Create
+     PUT /posts/:id                      =>   Posts::Update
+  DELETE /posts/:id                      =>   Posts::Delete
+     GET /posts/:posts_id/comments       =>   Posts::Comments::Index  (missing)
+     GET /posts/:posts_id/comments/:id   =>   Posts::Comments::Show   (missing)
+    POST /posts/:posts_id/comments       =>   Posts::Comments::Create (missing)
+     PUT /posts/:posts_id/comments/:id   =>   Posts::Comments::Update (missing)
+  DELETE /posts/:posts_id/comments/:id   =>   Posts::Comments::Delete (missing)
 ```
 
 This nests the resources. Therefore, the Command objects must be nested, too:
