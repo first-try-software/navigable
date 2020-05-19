@@ -36,15 +36,16 @@ RSpec.describe Navigable do
     subject(:resources) { Navigable.resources(&input_block) }
 
     let(:input_block) { Proc.new {} }
+    let(:app_resources) { instance_double(Navigable::Resources, instance_eval: true) }
 
     before do
-      allow(Navigable.app).to receive(:resources)
+      allow(Navigable.app).to receive(:resources).and_return(app_resources)
     end
 
-    it 'delegates to app' do
+    it 'delegates to app resources' do
       resources
 
-      expect(Navigable.app).to have_received(:resources) do |&block|
+      expect(app_resources).to have_received(:instance_eval) do |&block|
         expect(block).to eq(input_block)
       end
     end
