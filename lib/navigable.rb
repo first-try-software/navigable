@@ -3,6 +3,7 @@ require 'rack/bodyparser'
 require 'http_router'
 require 'json'
 require 'navigable/version'
+require 'navigable/route'
 require 'navigable/resource'
 require 'navigable/resources'
 require 'navigable/application'
@@ -24,5 +25,9 @@ module Navigable
 
   def self.resources(&block)
     app.resources.instance_eval(&block)
+  end
+
+  def self.load_resources
+    app.resources.load
   end
 end

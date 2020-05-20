@@ -7,7 +7,7 @@ module Navigable
     end
 
     def add(resource)
-      Resource.new(router, namespaces.dup, resource).add
+      resources << Resource.new(router, namespaces.dup, resource).tap { |resource| resource.add }
     end
 
     def namespace(namespace, &block)
@@ -16,7 +16,15 @@ module Navigable
       namespaces.pop
     end
 
+    def load
+      resources.each(&:load)
+    end
+
     private
+
+    def resources
+      @resources ||= []
+    end
 
     def namespaces
       @namespaces ||= []

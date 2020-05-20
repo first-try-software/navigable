@@ -20,4 +20,12 @@ RSpec.describe Navigable::Application do
       expect(http_router).to have_received(:call).with(env)
     end
   end
+
+  describe '#resources' do
+    subject(:resources) { application.resources }
+
+    it 'returns an instance of Resources' do
+      expect(resources).to be_a_kind_of(Navigable::Resources)
+    end
+  end
 end

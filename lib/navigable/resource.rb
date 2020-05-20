@@ -9,32 +9,21 @@ module Navigable
     end
 
     def add
-      path_to_resource = path_to(resource)
+      routes << Index.new(router, namespaces, resource)
+      routes << Show.new(router, namespaces, resource)
+      routes << Create.new(router, namespaces, resource)
+      routes << Update.new(router, namespaces, resource)
+      routes << Delete.new(router, namespaces, resource)
+    end
 
-      router.get("/#{path_to_resource}#{resource}").to(routable(namespaces.dup, resource, :index))
-      router.get("/#{path_to_resource}#{resource}/:id").to(routable(namespaces.dup, resource, :show))
-      router.post("/#{path_to_resource}#{resource}").to(routable(namespaces.dup, resource, :create))
-      router.put("/#{path_to_resource}#{resource}/:id").to(routable(namespaces.dup, resource, :update))
-      router.delete("/#{path_to_resource}#{resource}/:id").to(routable(namespaces.dup, resource, :delete))
+    def load
+      routes.each(&:load)
     end
 
     private
 
-    def path_to(resource)
-      return '' if namespaces.empty?
-
-      namespaces.map { |namespace| "#{namespace}/:#{namespace}_id" }.join('/') + '/'
-    end
-
-    def routable(namespaces, resource, action)
-      klass = namespaces.empty? ? Module : namespace_klass(namespaces)
-      klass.const_get(:"#{resource.capitalize}").const_get(:"#{action.capitalize}")
-    end
-
-    def namespace_klass(namespaces, klass = Module)
-      return klass if namespaces.empty?
-
-      namespace_klass(namespaces, klass.const_get(:"#{namespaces.shift.capitalize}"))
+    def routes
+      @routes ||= []
     end
   end
 end

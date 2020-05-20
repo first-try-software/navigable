@@ -17,6 +17,7 @@ Navigable is an opinionated, Rack-based request router that connects restful URI
 * Think about whether or not resources are singular or plural
   - Does a singular resource have an Index?
   - Should `posts_id` be `post_id`?
+* Revist class methods in Navigable (use instance?)
 * Add to CI
 * Add to CodeClimate
 * Rewrite README

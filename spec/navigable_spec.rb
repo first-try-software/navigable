@@ -32,21 +32,33 @@ RSpec.describe Navigable do
     end
   end
 
-  describe '.resources' do
-    subject(:resources) { Navigable.resources(&input_block) }
-
-    let(:input_block) { Proc.new {} }
-    let(:app_resources) { instance_double(Navigable::Resources, instance_eval: true) }
+  context 'delegates to application resources' do
+    let(:app) { instance_double(Navigable::Application, resources: app_resources) }
+    let(:app_resources) { instance_double(Navigable::Resources, instance_eval: true, load: true) }
 
     before do
-      allow(Navigable.app).to receive(:resources).and_return(app_resources)
+      allow(Navigable).to receive(:app).and_return(app)
     end
 
-    it 'delegates to app resources' do
-      resources
+    describe '.resources' do
+      subject(:resources) { Navigable.resources(&input_block) }
 
-      expect(app_resources).to have_received(:instance_eval) do |&block|
-        expect(block).to eq(input_block)
+      let(:input_block) { Proc.new {} }
+
+      before { resources }
+
+      it 'delegates to app resources' do
+        expect(app_resources).to have_received(:instance_eval) { |&block| expect(block).to eq(input_block) }
+      end
+    end
+
+    describe '.load_resources' do
+      subject(:load) { Navigable.load_resources }
+
+      before { load }
+
+      it 'delegates to app resources' do
+        expect(app_resources).to have_received(:load)
       end
     end
   end
