@@ -5,7 +5,7 @@ RSpec.describe Navigable::Resource do
   let(:namespaces) { [:posts, :authors] }
   let(:resource_name) { :avatars }
   let(:route_klasses) { [Navigable::Index, Navigable::Show, Navigable::Create, Navigable::Update, Navigable::Delete] }
-  let(:routes) { route_klasses.map { |klass| instance_double(klass, load:true)} }
+  let(:routes) { route_klasses.map { |klass| instance_double(klass, load: true, print: true) } }
 
   before do
     route_klasses.each_with_index do |klass, index|
@@ -34,6 +34,20 @@ RSpec.describe Navigable::Resource do
 
     it 'delegates to the Route objects' do
       expect(routes).to all(have_received(:load))
+    end
+  end
+
+  describe '#print' do
+    subject(:print) { resource.print }
+
+    before do
+      resource.add
+
+      print
+    end
+
+    it 'delegates to the Route objects' do
+      expect(routes).to all(have_received(:print))
     end
   end
 end

@@ -30,4 +30,8 @@ module Navigable
   def self.load_resources
     app.resources.load
   end
+
+  def self.print_resources
+    app.resources.print
+  end
 end

@@ -20,6 +20,10 @@ module Navigable
       routes.each(&:load)
     end
 
+    def print
+      routes.each(&:print)
+    end
+
     private
 
     def routes

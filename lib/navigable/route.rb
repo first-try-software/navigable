@@ -14,44 +14,72 @@ module Navigable
       @path ||= File.join('/', *namespaces.map { |namespace| "#{namespace}/:#{namespace}_id" }, resource.to_s)
     end
 
-    def routable(namespaces, resource, action)
-      namespace_klass(namespaces.dup.push(resource, action))
-    end
-
-    def namespace_klass(namespaces, klass = Module)
+    def destination(namespaces = destination_names, klass = Module)
       return klass if namespaces.empty?
 
-      namespace_klass(namespaces, klass.const_get(:"#{namespaces.shift.capitalize}"))
+      destination(namespaces, klass.const_get(:"#{namespaces.shift.capitalize}"))
+    end
+
+    def destination_name
+      destination_names.map(&:capitalize).join('::')
+    end
+
+    def destination_names
+      namespaces.dup.push(resource, action)
+    end
+
+    def action
+      self.class.name.split('::').last
     end
   end
 
   class Index < Route
     def load
-      router.get("#{path}").to(routable(namespaces, resource, :index))
+      router.get("#{path}").to(destination)
+    end
+
+    def print
+      puts "     GET #{path}  =>  #{destination_name}"
     end
   end
 
   class Show < Route
     def load
-      router.get("#{path}/:id").to(routable(namespaces, resource, :show))
+      router.get("#{path}/:id").to(destination)
+    end
+
+    def print
+      puts "     GET #{path}/:id  =>  #{destination_name}"
     end
   end
 
   class Create < Route
     def load
-      router.post("#{path}").to(routable(namespaces, resource, :create))
+      router.post("#{path}").to(destination)
+    end
+
+    def print
+      puts "    POST #{path}  =>  #{destination_name}"
     end
   end
 
   class Update < Route
     def load
-      router.put("#{path}/:id").to(routable(namespaces, resource, :update))
+      router.put("#{path}/:id").to(destination)
+    end
+
+    def print
+      puts "     PUT #{path}/:id  =>  #{destination_name}"
     end
   end
 
   class Delete < Route
     def load
-      router.delete("#{path}/:id").to(routable(namespaces, resource, :delete))
+      router.delete("#{path}/:id").to(destination)
+    end
+
+    def print
+      puts "  DELETE #{path}/:id  =>  #{destination_name}"
     end
   end
 end

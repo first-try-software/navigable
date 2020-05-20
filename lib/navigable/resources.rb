@@ -20,6 +20,10 @@ module Navigable
       resources.each(&:load)
     end
 
+    def print
+      resources.each(&:print)
+    end
+
     private
 
     def resources
