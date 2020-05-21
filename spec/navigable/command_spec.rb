@@ -24,10 +24,33 @@ end
 
 RSpec.describe Navigable::Command do
   describe '.inherited' do
-    let(:child) { Class.new(PerformCommand) }
+    let(:registrar) { instance_double(Navigable::Registrar, register: true) }
 
-    it 'passes the parent responds_with_method down to child' do
-      expect(child.instance_variable_get(:@responds_with_method)).to be(:perform)
+    before do
+      allow(Navigable::Registrar).to receive(:new).and_return(registrar)
+    end
+
+    context 'when inheritance happens naturally' do
+      let(:child) { Class.new(PerformCommand) }
+
+      it 'passes the parent responds_with_method down to child' do
+        expect(child.instance_variable_get(:@responds_with_method)).to be(:perform)
+      end
+    end
+
+    context 'when inheritance is forced at the barrel of a gun' do
+      let(:app) { instance_double(Navigable::Application, router: router) }
+      let(:router) { instance_double(HttpRouter) }
+      let(:child) { Class.new(Command) }
+
+      before do
+        allow(Navigable).to receive(:app).and_return(app)
+      end
+
+      it 'registers the child class with the Registrar' do
+        expect(Navigable::Registrar).to have_received(:new).with(child, router)
+        expect(registrar).to have_received(:register)
+      end
     end
   end
 

@@ -21,11 +21,11 @@ RSpec.describe Navigable::Application do
     end
   end
 
-  describe '#resources' do
-    subject(:resources) { application.resources }
+  describe '#router' do
+    subject(:router) { application.router }
 
     it 'returns an instance of Resources' do
-      expect(resources).to be_a_kind_of(Navigable::Resources)
+      expect(router).to be(http_router)
     end
   end
 end

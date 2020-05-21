@@ -4,12 +4,6 @@ module Navigable
       router.call(env)
     end
 
-    def resources
-      @resources ||= Resources.new(router)
-    end
-
-    private
-
     def router
       @router ||= HttpRouter.new
     end

@@ -4,23 +4,19 @@ Navigable is an opinionated, Rack-based request router that connects restful URI
 
 ## TODO
 
-* Add `root` resource support
-* Allow support for `only: [:index, :show]` in resources
-* Add a rake task to display resources: `rake resources`
+* Warn when overriding `root` route
+* Add a rake task to display routes: `rake routes`
 * Consider adding a generator
   - new app
-  - new resource
-  - new resource in a namespace
 * Support .json or .html from url
 * Provide headers to client in case they need them (like for auth)
 * Allow people to add their own middleware
 * Think about whether or not resources are singular or plural
-  - Does a singular resource have an Index?
   - Should `posts_id` be `post_id`?
-* Revist class methods in Navigable (use instance?)
 * Add to CI
 * Add to CodeClimate
 * Rewrite README
+* Benchmark against https://github.com/jeremyevans/r10k
 
 ## Installation
 
