@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.description   = %q{Navigable is an opinionated, Rack and HttpRouter based tool for connecting HTTP routes to command classes.}
   spec.homepage      = "https://github.com/first_try/navigable"
   spec.license       = "MIT"
-  spec.required_ruby_version = Gem::Requirement.new(">= 2.6.0")
+  spec.required_ruby_version = Gem::Requirement.new(">= 2.7.0")
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/first_try/navigable"
@@ -24,7 +24,7 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "http_router", "~> 0.11"
+  spec.add_dependency "hanami-router", "= 2.0.0.alpha3"
   spec.add_dependency "rack-bodyparser", "~> 1.0"
 
   spec.add_development_dependency "bundler", "~> 2.0"

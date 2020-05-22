@@ -1,3 +1,5 @@
+# frozen-string-literal: true
+
 module Navigable
   class Registrar
     VERB_FOR = {
@@ -19,7 +21,7 @@ module Navigable
     def register
       if verb
         print_route
-        router.public_send(verb, path).to(command)
+        router.public_send(verb, path, to: command)
       end
     end
 

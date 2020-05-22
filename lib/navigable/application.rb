@@ -1,3 +1,5 @@
+# frozen-string-literal: true
+
 module Navigable
   class Application
     def call(env)
@@ -5,7 +7,7 @@ module Navigable
     end
 
     def router
-      @router ||= HttpRouter.new
+      @router ||= Hanami::Router.new
     end
   end
 end

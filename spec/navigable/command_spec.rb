@@ -40,7 +40,7 @@ RSpec.describe Navigable::Command do
 
     context 'when inheritance is forced at the barrel of a gun' do
       let(:app) { instance_double(Navigable::Application, router: router) }
-      let(:router) { instance_double(HttpRouter) }
+      let(:router) { instance_double(Hanami::Router) }
       let(:child) { Class.new(Command) }
 
       before do
@@ -57,14 +57,9 @@ RSpec.describe Navigable::Command do
   describe '.call' do
     let(:env) do
       {
-        'router.request' => router_request,
         'parsed_body' => parsed_body,
         'router.params' => router_params
       }
-    end
-
-    let(:router_request) do
-      instance_double(HttpRouter::Request, rack_request: rack_request)
     end
 
     let(:rack_request) do
@@ -74,6 +69,10 @@ RSpec.describe Navigable::Command do
     let(:query_string_and_form_data_params) { {} }
     let(:parsed_body) { {} }
     let(:router_params) { {} }
+
+    before do
+      allow(Rack::Request).to receive(:new).and_return(rack_request)
+    end
 
     context 'when there are no params' do
       context 'when a responds_with_method has NOT been configured' do

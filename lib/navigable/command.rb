@@ -1,6 +1,8 @@
+# frozen-string-literal: true
+
 module Navigable
   module Command
-    EXECUTE_NOT_IMPLEMENTED_MESSAGE = 'Class must implement `execute` method or configure an alternative with `responds_with_method`.'.freeze
+    EXECUTE_NOT_IMPLEMENTED_MESSAGE = 'Class must implement `execute` method or configure an alternative with `responds_with_method`.'
 
     def self.extended(base)
       base.class_eval do
@@ -45,7 +47,7 @@ module Navigable
       end
 
       def request_params
-        @request_params ||= symbolize_keys(env['router.request']&.rack_request&.params || {})
+        @request_params ||= symbolize_keys(Rack::Request.new(env).params || {})
       end
 
       def body_params
@@ -57,7 +59,7 @@ module Navigable
       end
 
       def symbolize_keys(hash)
-        hash&.map { |key, value| [key.to_sym, value] }&.to_h || {}
+        hash.each_with_object({}) { |(key, value), obj| obj[key.to_sym] = value }
       end
     end
   end

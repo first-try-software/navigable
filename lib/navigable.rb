@@ -1,6 +1,8 @@
+# frozen-string-literal: true
+
 require 'rack'
 require 'rack/bodyparser'
-require 'http_router'
+require 'hanami/router'
 require 'json'
 require 'navigable/version'
 require 'navigable/registrar'

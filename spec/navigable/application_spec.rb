@@ -1,10 +1,10 @@
 RSpec.describe Navigable::Application do
   subject(:application) { described_class.new }
 
-  let(:http_router) { instance_double(HttpRouter, call: true) }
+  let(:router) { instance_double(Hanami::Router, call: true) }
 
   before do
-    allow(HttpRouter).to receive(:new).and_return(http_router)
+    allow(Hanami::Router).to receive(:new).and_return(router)
   end
 
   describe '#call' do
@@ -16,16 +16,16 @@ RSpec.describe Navigable::Application do
       call
     end
 
-    it 'delegates call method to HttpRouter' do
-      expect(http_router).to have_received(:call).with(env)
+    it 'delegates call method to Hanami::Router' do
+      expect(router).to have_received(:call).with(env)
     end
   end
 
   describe '#router' do
-    subject(:router) { application.router }
+    subject(:app_router) { application.router }
 
     it 'returns an instance of Resources' do
-      expect(router).to be(http_router)
+      expect(app_router).to be(router)
     end
   end
 end

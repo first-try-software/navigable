@@ -15,12 +15,11 @@ RSpec.shared_examples 'a registered route' do
   describe '#register' do
     subject(:register) { registrar.register }
 
-    let(:router) { instance_double(HttpRouter) }
-    let(:helper) { instance_double(HttpRouter::RouteHelper, to: true)}
+    let(:router) { instance_double(Hanami::Router) }
 
     before do
       allow(registrar).to receive(:puts)
-      allow(router).to receive(verb).and_return(helper)
+      allow(router).to receive(verb)
 
       register
     end
@@ -30,8 +29,7 @@ RSpec.shared_examples 'a registered route' do
     end
 
     it 'registers the route with the router' do
-      expect(router).to have_received(verb).with(path)
-      expect(helper).to have_received(:to).with(command)
+      expect(router).to have_received(verb).with(path, to: command)
     end
   end
 end

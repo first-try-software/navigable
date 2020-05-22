@@ -1,6 +1,6 @@
 # Navigable
 
-Navigable is an opinionated, Rack-based request router that connects restful URIs to [Command pattern](https://en.wikipedia.org/wiki/Command_pattern) objects documented in [Design Patterns](https://en.wikipedia.org/wiki/Design_Patterns). Navigable provides a simple DSL for defining resourses and namespaces. Once resources are defined, requests are translated by convention into the appropriate class. Then, Navigable instantiates and executes the Command, which renders an appropriate response to the client.
+Navigable is an opinionated extension of [Hanami::Router](https://github.com/hanami/router) that uses convention and auto-loading to connect restful URIs to [Command](https://en.wikipedia.org/wiki/Command_pattern) classes. When a command class is loaded into memory, it automatically registers a corresponding route with the router. When a request is received, Navigable instantiates and executes the associated Command, which renders the appropriate response to the client.
 
 ## TODO
 
@@ -16,7 +16,6 @@ Navigable is an opinionated, Rack-based request router that connects restful URI
 * Add to CI
 * Add to CodeClimate
 * Rewrite README
-* Benchmark against https://github.com/jeremyevans/r10k
 
 ## Installation
 
@@ -36,13 +35,33 @@ Or install it yourself as:
 
 ## Usage
 
-First, add resources to your application:
-
-```ruby
-Navibable.resources do
-  add :posts
-end
+To create a Navigable application:
 ```
+$ navigable new app_name
+```
+
+This will create the following project structure:
+```
+/app_name
+  config.ru
+  /commands
+    command.rb
+    root.rb
+```
+
+By convention, command classes are expected to be named `Root`, `Index`, `Show`, `Create`, `Update`, or `Delete`. They may be namespaced
+
+
+Classes in the `commands` folder must follow a convention. They must be named `Root`, `Index`, `Show`, `Create`, `Update`, or `Delete`. These classes will be registered as route handlers when the files are loaded, which happens automatically when the application starts.
+```
+     GET /            =>   Root
+     GET /posts       =>   Posts::Index
+     GET /posts/:id   =>   Posts::Show
+    POST /posts       =>   Posts::Create
+     PUT /posts/:id   =>   Posts::Update
+  DELETE /posts/:id   =>   Posts::Delete
+```
+
 
 This will declare five routes. View them by running `rake resources`:
 

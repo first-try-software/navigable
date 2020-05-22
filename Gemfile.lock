@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     navigable (0.1.0)
-      http_router (~> 0.11)
+      hanami-router (= 2.0.0.alpha3)
       rack-bodyparser (~> 1.0)
 
 GEM
@@ -10,9 +10,16 @@ GEM
   specs:
     diff-lcs (1.3)
     docile (1.3.2)
-    http_router (0.11.2)
-      rack (>= 1.0.0)
-      url_mount (~> 0.2.1)
+    hanami-router (2.0.0.alpha3)
+      mustermann (~> 1.0)
+      mustermann-contrib (~> 1.0)
+      rack (~> 2.0)
+    hansi (0.2.0)
+    mustermann (1.1.1)
+      ruby2_keywords (~> 0.0.1)
+    mustermann-contrib (1.1.1)
+      hansi (~> 0.2.0)
+      mustermann (= 1.1.1)
     rack (2.2.2)
     rack-bodyparser (1.0.0)
       rack
@@ -34,12 +41,11 @@ GEM
     rspec-support (3.9.2)
     rspec_junit_formatter (0.4.1)
       rspec-core (>= 2, < 4, != 2.12.0)
+    ruby2_keywords (0.0.2)
     simplecov (0.18.5)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
     simplecov-html (0.12.2)
-    url_mount (0.2.1)
-      rack
 
 PLATFORMS
   ruby
