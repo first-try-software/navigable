@@ -4,53 +4,44 @@ require_relative '../../lib/navigable/response'
 class Command
   extend Navigable::Command
 
-  def initialize(params); end
   def execute; render; end
-end
-
-class PerformCommand
-  extend Navigable::Command
-
-  responds_with_method :perform
-
-  def perform; render; end
 end
 
 class NoExecuteCommand
   extend Navigable::Command
-
-  def initialize(params); end
 end
 
 RSpec.describe Navigable::Command do
+  describe '.extended' do
+    subject(:extended_object) { NoExecuteCommand.new({}) }
+
+    it 'defines a constructor that accepts params' do
+      expect { extended_object }.not_to raise_error
+    end
+
+    it 'defines a render method' do
+      expect { extended_object.render }.not_to raise_error
+    end
+
+    it 'defines an execute method that raise an error' do
+      expect { extended_object.execute }.to raise_error(NotImplementedError)
+    end
+  end
+
   describe '.inherited' do
     let(:registrar) { instance_double(Navigable::Registrar, register: true) }
+    let(:app) { instance_double(Navigable::Application, router: router) }
+    let(:router) { instance_double(Hanami::Router) }
+    let(:child) { Class.new(Command) }
 
     before do
       allow(Navigable::Registrar).to receive(:new).and_return(registrar)
+      allow(Navigable).to receive(:app).and_return(app)
     end
 
-    context 'when inheritance happens naturally' do
-      let(:child) { Class.new(PerformCommand) }
-
-      it 'passes the parent responds_with_method down to child' do
-        expect(child.instance_variable_get(:@responds_with_method)).to be(:perform)
-      end
-    end
-
-    context 'when inheritance is forced at the barrel of a gun' do
-      let(:app) { instance_double(Navigable::Application, router: router) }
-      let(:router) { instance_double(Hanami::Router) }
-      let(:child) { Class.new(Command) }
-
-      before do
-        allow(Navigable).to receive(:app).and_return(app)
-      end
-
-      it 'registers the child class with the Registrar' do
-        expect(Navigable::Registrar).to have_received(:new).with(child, router)
-        expect(registrar).to have_received(:register)
-      end
+    it 'registers the child class with the Registrar' do
+      expect(Navigable::Registrar).to have_received(:new).with(child, router)
+      expect(registrar).to have_received(:register)
     end
   end
 
@@ -58,17 +49,17 @@ RSpec.describe Navigable::Command do
     let(:env) do
       {
         'parsed_body' => parsed_body,
-        'router.params' => router_params
+        'router.params' => url_params
       }
     end
 
     let(:rack_request) do
-      instance_double(Rack::Request, params: query_string_and_form_data_params)
+      instance_double(Rack::Request, params: form_params)
     end
 
-    let(:query_string_and_form_data_params) { {} }
+    let(:form_params) { {} }
     let(:parsed_body) { {} }
-    let(:router_params) { {} }
+    let(:url_params) { {} }
 
     before do
       allow(Rack::Request).to receive(:new).and_return(rack_request)
@@ -106,32 +97,14 @@ RSpec.describe Navigable::Command do
           end
         end
       end
-
-      context 'when a responds_with_method has been configured' do
-        subject(:call) { PerformCommand.call(env) }
-
-        let(:perform_command) do
-          instance_double(PerformCommand, perform: Navigable::Response.new({}))
-        end
-
-        before do
-          allow(PerformCommand).to receive(:new).and_return(perform_command)
-
-          call
-        end
-
-        it 'calls the configured method on the command' do
-          expect(perform_command).to have_received(:perform).with(no_args)
-        end
-      end
     end
 
     context 'when there are params' do
       subject(:call) { Command.call(env) }
 
-      let(:query_string_and_form_data_params) { { search: 'toast' } }
+      let(:form_params) { { search: 'toast' } }
       let(:parsed_body) { { 'title' => 'title', 'description' => 'description' } }
-      let(:router_params) { { id: '123' } }
+      let(:url_params) { { id: '123' } }
 
       before do
         allow(Command).to receive(:new).and_call_original

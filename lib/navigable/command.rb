@@ -6,8 +6,14 @@ module Navigable
 
     def self.extended(base)
       base.class_eval do
-        def render(**params)
-          Response.new(params)
+        attr_reader :params
+
+        def initialize(request_params = {})
+          @params = request_params
+        end
+
+        def render(response_params = {})
+          Response.new(response_params)
         end
 
         def execute
@@ -17,16 +23,11 @@ module Navigable
     end
 
     def inherited(child)
-      child.responds_with_method(@responds_with_method) if @responds_with_method
       Registrar.new(child, Navigable.app.router).register
     end
 
-    def responds_with_method(method_name)
-      @responds_with_method = method_name
-    end
-
     def call(env)
-      response = self.new(params(env)).public_send(@responds_with_method || :execute)
+      response = self.new(params(env)).public_send(:execute)
       raise InvalidResponse unless response.is_a?(Navigable::Response)
       response.to_rack_response
     end
@@ -43,19 +44,19 @@ module Navigable
       end
 
       def to_h
-        [request_params, body_params, router_params].reduce(&:merge)
+        [form_params, body_params, url_params].reduce(&:merge)
       end
 
-      def request_params
-        @request_params ||= symbolize_keys(Rack::Request.new(env).params || {})
+      def form_params
+        @form_params ||= symbolize_keys(Rack::Request.new(env).params || {})
       end
 
       def body_params
         @body_params ||= symbolize_keys(env['parsed_body'] || {})
       end
 
-      def router_params
-        @router_params ||= env['router.params'] || {}
+      def url_params
+        @url_params ||= env['router.params'] || {}
       end
 
       def symbolize_keys(hash)

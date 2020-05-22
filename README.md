@@ -13,6 +13,9 @@ Navigable is an opinionated extension of [Hanami::Router](https://github.com/han
 * Allow people to add their own middleware
 * Think about whether or not resources are singular or plural
   - Should `posts_id` be `post_id`?
+* Modules extend Navigable::Namespace to become namespaces with URL params
+  - url_param :post_id
+* named command parameters?
 * Add to CI
 * Add to CodeClimate
 * Rewrite README
@@ -35,19 +38,104 @@ Or install it yourself as:
 
 ## Usage
 
-To create a Navigable application:
-```
-$ navigable new app_name
-```
+To create a Navigable application, run:
 
-This will create the following project structure:
+    $ navigable new app_name
+
+This will create a new Navigable application in the specified folder with the following structure:
 ```
 /app_name
-  config.ru
+  config.ru         # Rackup file to start application
   /commands
-    command.rb
-    root.rb
+    command.rb      # Base command class
+    root.rb         # Root command class
 ```
+
+To add functionality to your application, just add commands. Say you wanted to see all the entries in a blog. Just create `/app_name/commands/posts/index.rb` and add this code:
+
+```ruby
+module Posts
+  class Index < Command
+    attr_reader :search
+
+    def initialize(params)
+      @search = params[:search]
+    end
+
+    def execute
+      posts = fetch_posts(filter: search)
+
+      render json: posts
+    end
+
+    private
+
+    def fetch_posts(filter:)
+      # Fetch data however you want
+    end
+  end
+end
+```
+
+Now, when you run your application and `/posts/index.rb` is loaded, Navigable will automatically register this route: `GET /posts  =>  Posts::Index`.
+
+By convention, command classes must be named `Index`, `Show`, `Create`, `Update`, or `Delete`. Each command class automatically registers an appropriate route when the file is loaded. You can add all five commands, or a subset. To leave one out, just don't define the command class. Additionally, `Root` is a special command class that adds the root route: `GET /  =>  Root`.
+
+Navigable automatically loads all the files in the `commands` folder. When it does, it creates the following route structure (where `resource` is the name of the module in which the class is defined, like `posts` in the example above):
+```
+Root        #    GET /
+Index       #    GET /resource
+Show        #    GET /resource/:id
+Create      #   POST /resource
+Update      #    PUT /resource/:id
+Delete      # DELETE /resource/:id
+```
+
+Inside the command classes, you must define an initializer that accepts `params`, and an `execute` method that calls `render`. `params` is a hash that includes all of the meaningful parameters in the request, including parsed JSON from the body of the request, multi-part form data, and query string key/value pairs. It's up to you how you to handle those parameters. But, we recommend that you only capture the parameters that your command needs, like `@search` in the example above. However you handle them, do NOT pass the entire parameters hash into a database query.
+
+The `execute` method can run any code you want. But, we recommend that you keep your command classes small by leveraging common design patterns to offload things like data access and template rendering. Once your command has fetched data and created a response, the `execute` method must call `render` in order to send the repsonse to the client. `render` takes the following parameters: `status:`, `headers:`, `json:`, `html:`, `text:`, and `body:`.
+
+```ruby
+render                              # Returns status: 200, with an empty string in the body
+render status: 404                  # 200 is the default
+render json: {a: 1, b: 2}.to_json   # Sets content type to application/json and returns JSON
+render html: '<html>...</html>'     # Sets content type to text/html and returns HTML
+render text: 'word'                 # Sets content type to text/plain and returns the text
+render body: 'any string'           # Returns the string without setting content type
+
+render headers: { 'Content-Type' => 'image/png' }, body: File.read('http://placekitten.com/300/300')    # Returns a random kitten image
+```
+
+
+
+
+
+
+YOU ARE HERE!!!
+
+
+
+
+
+
+
+
+Any parameters sent with the request - whether from JSON in the request body, from multi-part form data, or from the query string - will be in the params hash used to initialize your command. This allows your command class to determine which params it cares about and ignore the others.
+
+(NOTE: `fetch_posts` is a fictional method used here to illustrate a typical use case. You can use whatever data access technology you want with Navigable.)
+
+
+
+
+
+
+
+
+
+To add a route to your application, create a new Command class.
+
+
+
 
 By convention, command classes are expected to be named `Root`, `Index`, `Show`, `Create`, `Update`, or `Delete`. They may be namespaced
 
@@ -63,25 +151,6 @@ Classes in the `commands` folder must follow a convention. They must be named `R
 ```
 
 
-This will declare five routes. View them by running `rake resources`:
-
-```
-     GET /posts       =>   Posts::Index  (missing)
-     GET /posts/:id   =>   Posts::Show   (missing)
-    POST /posts       =>   Posts::Create (missing)
-     PUT /posts/:id   =>   Posts::Update (missing)
-  DELETE /posts/:id   =>   Posts::Delete (missing)
-```
-
-Next, declare the five missing classes listed above...
-
-First, extend `Navigable::Command` in a base class:
-
-```ruby
-class Command
-  extend Navigable::Command
-end
-```
 
 Then, declare the Posts Commands. Each command requires an `execute` method that calls `render` to respond to the request:
 
