@@ -4,11 +4,9 @@ Navigable is an opinionated extension of [Hanami::Router](https://github.com/han
 
 ## TODO
 
-* Warn when overriding `root` route
-* Add a rake task to display routes: `rake routes`
-* Consider adding a generator
-  - new app
-* Support .json or .html from url
+* Add `rake routes` once Hanami::Router 2.0 supports it
+* Add `navigable new app` CLI
+* Support `.json` or `.html` formats in URL
 * Provide headers to client in case they need them (like for auth)
 * Allow people to add their own middleware
 * Think about whether or not resources are singular or plural
@@ -16,9 +14,10 @@ Navigable is an opinionated extension of [Hanami::Router](https://github.com/han
 * Modules extend Navigable::Namespace to become namespaces with URL params
   - url_param :post_id
 * named command parameters?
+  - param permitting
 * Add to CI
 * Add to CodeClimate
-* Rewrite README
+* Add documenation comments & generate docs
 
 ## Installation
 
@@ -38,7 +37,7 @@ Or install it yourself as:
 
 ## Usage
 
-To create a Navigable application, run:
+Run this command to create a Navigable application:
 
     $ navigable new app_name
 
@@ -51,7 +50,7 @@ This will create a new Navigable application in the specified folder with the fo
     root.rb         # Root command class
 ```
 
-To add functionality to your application, just add commands. Say you wanted to see all the entries in a blog. Just create `/app_name/commands/posts/index.rb` and add this code:
+To add functionality to your application, just add commands. Say you wanted to see all the entries in a blog. Just add this code to `/app_name/commands/posts/index.rb`:
 
 ```ruby
 module Posts
@@ -63,84 +62,25 @@ module Posts
     end
 
     def execute
-      posts = fetch_posts(filter: search)
+      posts = posts
 
       render json: posts
     end
 
     private
 
-    def fetch_posts(filter:)
-      # Fetch data however you want
+    def posts
+      # Fetch data using search parameter
     end
   end
 end
 ```
 
-Now, when you run your application and `/posts/index.rb` is loaded, Navigable will automatically register this route: `GET /posts  =>  Posts::Index`.
+Now, when you run your application, every file in the `/commands` folder will be auto-loaded. When `/posts/index.rb` loads, Navigable will register this route: `GET /posts  =>  Posts::Index` for you. So, there's no need for a routes file.
 
-By convention, command classes must be named `Index`, `Show`, `Create`, `Update`, or `Delete`. Each command class automatically registers an appropriate route when the file is loaded. You can add all five commands, or a subset. To leave one out, just don't define the command class. Additionally, `Root` is a special command class that adds the root route: `GET /  =>  Root`.
+By convention, command classes must be named `Index`, `Show`, `Create`, `Update`, or `Delete`. Each command class automatically registers an appropriate route when the file is loaded. You can add all five commands for a resource, or only a subset. To add one, simply create the appropriate command class. To leave one out, just don't define the command class. Additionally, `Root` is a special command class that adds the root route: `GET /  =>  Root`.
 
-Navigable automatically loads all the files in the `commands` folder. When it does, it creates the following route structure (where `resource` is the name of the module in which the class is defined, like `posts` in the example above):
-```
-Root        #    GET /
-Index       #    GET /resource
-Show        #    GET /resource/:id
-Create      #   POST /resource
-Update      #    PUT /resource/:id
-Delete      # DELETE /resource/:id
-```
-
-Inside the command classes, you must define an initializer that accepts `params`, and an `execute` method that calls `render`. `params` is a hash that includes all of the meaningful parameters in the request, including parsed JSON from the body of the request, multi-part form data, and query string key/value pairs. It's up to you how you to handle those parameters. But, we recommend that you only capture the parameters that your command needs, like `@search` in the example above. However you handle them, do NOT pass the entire parameters hash into a database query.
-
-The `execute` method can run any code you want. But, we recommend that you keep your command classes small by leveraging common design patterns to offload things like data access and template rendering. Once your command has fetched data and created a response, the `execute` method must call `render` in order to send the repsonse to the client. `render` takes the following parameters: `status:`, `headers:`, `json:`, `html:`, `text:`, and `body:`.
-
-```ruby
-render                              # Returns status: 200, with an empty string in the body
-render status: 404                  # 200 is the default
-render json: {a: 1, b: 2}.to_json   # Sets content type to application/json and returns JSON
-render html: '<html>...</html>'     # Sets content type to text/html and returns HTML
-render text: 'word'                 # Sets content type to text/plain and returns the text
-render body: 'any string'           # Returns the string without setting content type
-
-render headers: { 'Content-Type' => 'image/png' }, body: File.read('http://placekitten.com/300/300')    # Returns a random kitten image
-```
-
-
-
-
-
-
-YOU ARE HERE!!!
-
-
-
-
-
-
-
-
-Any parameters sent with the request - whether from JSON in the request body, from multi-part form data, or from the query string - will be in the params hash used to initialize your command. This allows your command class to determine which params it cares about and ignore the others.
-
-(NOTE: `fetch_posts` is a fictional method used here to illustrate a typical use case. You can use whatever data access technology you want with Navigable.)
-
-
-
-
-
-
-
-
-
-To add a route to your application, create a new Command class.
-
-
-
-
-By convention, command classes are expected to be named `Root`, `Index`, `Show`, `Create`, `Update`, or `Delete`. They may be namespaced
-
-
-Classes in the `commands` folder must follow a convention. They must be named `Root`, `Index`, `Show`, `Create`, `Update`, or `Delete`. These classes will be registered as route handlers when the files are loaded, which happens automatically when the application starts.
+Here's a summary of the routes that each command class registers for the `Posts` resource:
 ```
      GET /            =>   Root
      GET /posts       =>   Posts::Index
@@ -150,149 +90,123 @@ Classes in the `commands` folder must follow a convention. They must be named `R
   DELETE /posts/:id   =>   Posts::Delete
 ```
 
-
-
-Then, declare the Posts Commands. Each command requires an `execute` method that calls `render` to respond to the request:
-
-```ruby
-module Posts
-  class Index < Command
-    attr_reader :search
-
-    def initialize(params)
-      @search = params[:search]
-    end
-
-    def execute
-      posts = fetch_posts(filter: search)
-
-      render json: posts
-    end
-  end
-
-  class Show < Command
-    attr_reader :id
-
-    def initialize(params)
-      @id = params[:id]
-    end
-
-    def execute
-      post = fetch_post(id)
-
-      if post
-        render json: post
-      else
-        render status: 404, json: {}
-      end
-    end
-  end
-
-  class Create < Command
-    attr_reader :title, :body
-
-    def initialize(params)
-      @title = params[:title]
-      @body = params[:body]
-    end
-
-    def execute
-      post = create_post(title, body)
-
-      if post
-        render status: 201, json: post
-      else
-        render status: 400, json: {}
-      end
-    end
-  end
-
-  class Update < Command
-    attr_reader :id, :title, :body
-
-    def initialize(params)
-      @id = params[:id]
-      @title = params[:title]
-      @body = params[:body]
-    end
-
-    def execute
-      post = update_post(id, title, body)
-
-      render json: post
-    end
-  end
-
-  class Delete < Command
-    attr_reader :id
-
-    def initialize(params)
-      @id = params[:id]
-    end
-
-    def execute
-      deleted_post = delete_post(id)
-
-      if deleted_post
-        render json: deleted_post
-      else
-        render status: 404, json: {}
-      end
-    end
-  end
-end
-```
-
-NOTE: The data read and write operations in the examples are for illustrative purposes only. They are beyond the scope of Navigable.
-
-You can also declare namespaces with nested resources:
-
-```ruby
-Navibable.resources do
-  add :posts
-
-  namespace :posts do
-    add :comments
-  end
-end
-```
-
-This will declare five more routes. View them by running `rake resources`:
-
-```
-     GET /posts                          =>   Posts::Index
-     GET /posts/:id                      =>   Posts::Show
-    POST /posts                          =>   Posts::Create
-     PUT /posts/:id                      =>   Posts::Update
-  DELETE /posts/:id                      =>   Posts::Delete
-     GET /posts/:posts_id/comments       =>   Posts::Comments::Index  (missing)
-     GET /posts/:posts_id/comments/:id   =>   Posts::Comments::Show   (missing)
-    POST /posts/:posts_id/comments       =>   Posts::Comments::Create (missing)
-     PUT /posts/:posts_id/comments/:id   =>   Posts::Comments::Update (missing)
-  DELETE /posts/:posts_id/comments/:id   =>   Posts::Comments::Delete (missing)
-```
-
-This nests the resources. Therefore, the Command objects must be nested, too:
-
+You can even create namespaced routes by wrapping a command class in additional modules, like this:
 ```ruby
 module Posts
   module Comments
-    class Show < Command
-      attr_reader :id
+    class Index
+      attr_reader :posts_id, :search
 
       def initialize(params)
-        @posts_id = params[posts_id]
-        @id = params[:id]
+        @posts_id = params[:posts_id]
+        @search = params[:search]
       end
 
       def execute
-        post = fetch_post(id)
+        render json: comments
+      end
 
-        if post
-          render json: post
-        else
-          render status: 404, json: {}
-        end
+      private
+
+      def comments
+        # Fetch data using posts_id and search parameter
+      end
+    end
+  end
+end
+```
+
+Which will create this route:
+
+    GET /posts/:posts_id/comments  =>  Posts::Comments::Index
+
+Inside a command class, you must define an initializer that accepts `params`, and create an `execute` method that returns a `Navigable::Response`.
+
+`params` is a hash that includes all of the meaningful parameters in the request, including parsed JSON from the body of the request, multi-part form data, and query string key/value pairs.
+
+The `execute` method needs to create a `Navigable::Response` object to return to the client. The simplest way to do that is to call `render`. The `render` method takes a hash containing zero or more of the following attributes: `status:`, `headers:`, `json:`, `html:`, `text:`, and `body:`.
+
+```ruby
+render                              # Returns status: 200, with an empty string in the body
+render status: 404                  # 200 is the default
+render json: {a: 1, b: 2}.to_json   # Sets content type to application/json and returns JSON
+render html: '<html>...</html>'     # Sets content type to text/html and returns HTML
+render text: 'word'                 # Sets content type to text/plain and returns the text
+render body: 'any string'           # Returns the string without setting content type
+
+# Returns a random kitten image
+render headers: { 'Content-Type' => 'image/png' }, body: File.read('http://placekitten.com/300/300')
+```
+> Note: It's up to you how you to handle the parameters injected into your command object. But, we recommend that you only capture the parameters that your command needs, like `@search` in the examples above. However you handle them, do NOT pass the entire parameters hash into a database query.
+
+> Note: We recommend that you keep your command classes small by leveraging common design patterns to offload things like data access and template rendering. We also recommend the use of dependency injection when defining external collaborators, like this:
+
+```ruby
+module Posts
+  class Show
+    attr_reader :id
+
+    def initialize(params, template = ShowPost, repository = PostsRepository)
+      @id = params[:id]
+      @template = template
+      @repository = repository
+    end
+
+    def execute
+      return render(status: 404) if post.nil?
+
+      render html: body
+    end
+
+    private
+
+    def body
+      template.new(post).render
+    end
+
+    def post
+      @repository.find(id)
+    end
+  end
+end
+
+Rspec.describe Posts::Show do
+  subject(:command) { described_class.new(params, template, repository) }
+
+  let(:params) { { id: 42 } }
+  let(:template) { instance_double(ShowPost, render: body) }
+  let(:body) { nil }
+  let(:repository) { instance_double(PostsRepository, find: post) }
+  let(:post) { nil }
+
+  before do
+    allow(ShowPost).to receive(:new).and_return(template)
+    allow(PostsRepository).to receive(:new).and_return(repository)
+  end
+
+  describe '#execute' do
+    subject(:execute) { command.execute }
+
+    before do
+      allow(command).to receive(:render)
+
+      execute
+    end
+
+    context 'when the post is NOT found' do
+      let(:post) { nil }
+
+      it 'renders 404' do
+        expect(command).to receive(:render).with(status: 404)
+      end
+    end
+
+    context 'when the post is found' do
+      let(:post) { instance_double(Post) }
+      let(:body) { '<html><body>Post 42</body></html>' }
+
+      it 'renders the post' do
+        expect(command).to receive(:render).with(html: body)
       end
     end
   end
