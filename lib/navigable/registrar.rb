@@ -1,6 +1,8 @@
 # frozen-string-literal: true
 
 module Navigable
+  class InvalidRoute < StandardError; end
+
   class Registrar
     VERB_FOR = {
       root: :get,
@@ -19,13 +21,20 @@ module Navigable
     end
 
     def register
-      if verb
-        print_route
-        router.public_send(verb, path, to: command)
-      end
+      raise InvalidRoute unless valid_route?
+
+      print_route
+      router.public_send(verb, path, to: command)
     end
 
     private
+
+    def valid_route?
+      return false if verb.nil?
+      return false if action == :root && !namespaces.empty?
+
+      true
+    end
 
     def namespaces
       @namespaces ||= command.name.downcase.split('::')
