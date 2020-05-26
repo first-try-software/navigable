@@ -22,10 +22,11 @@ Gem::Specification.new do |spec|
   end
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
-  spec.require_paths = ["lib"]
+  spec.require_paths = ["lib", "assets"]
 
   spec.add_dependency "hanami-router", "= 2.0.0.alpha3"
   spec.add_dependency "rack-bodyparser", "~> 1.0"
+  spec.add_dependency "thor", "~> 1.0"
 
   spec.add_development_dependency "bundler", "~> 2.0"
   spec.add_development_dependency "rake", "~> 12.0"

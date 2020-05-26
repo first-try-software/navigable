@@ -5,6 +5,7 @@ RSpec.describe Navigable::Application do
 
   before do
     allow(Hanami::Router).to receive(:new).and_return(router)
+    allow(router).to receive(:get).with('/', to: Navigable::Splash)
   end
 
   describe '#call' do

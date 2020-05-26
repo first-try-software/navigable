@@ -4,8 +4,8 @@ Navigable is an opinionated extension of [Hanami::Router](https://github.com/han
 
 ## TODO
 
+* Feels weird managing both extension and inheritance in command.rb
 * Add `rake routes` once Hanami::Router 2.0 supports it
-* Add `navigable new app` CLI
 * Support `.json` or `.html` formats in URL
 * Provide headers to client in case they need them (like for auth)
 * Allow people to add their own middleware
@@ -15,9 +15,9 @@ Navigable is an opinionated extension of [Hanami::Router](https://github.com/han
   - url_param :post_id
 * named command parameters?
   - param permitting
+* Add documenation comments & generate docs
 * Add to CI
 * Add to CodeClimate
-* Add documenation comments & generate docs
 
 ## Installation
 
@@ -211,6 +211,17 @@ Rspec.describe Posts::Show do
     end
   end
 end
+```
+
+## Command Line Interface
+```
+Commands:
+  navigable help [COMMAND]  # Describe available commands or one specific command
+  navigable new APP_NAME    # Generates a new Navigable application
+  navigable open            # Opens the current navigable application in the browser
+  navigable server          # Starts the Navigable server
+  navigable start           # Starts the Navigable server daemon
+  navigable stop            # Stops the Navigable server daemon
 ```
 
 ## Development
