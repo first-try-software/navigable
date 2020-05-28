@@ -7,6 +7,9 @@ Navigable is an opinionated extension of [Hanami::Router](https://github.com/han
 ## TODO
 
 * Feels weird managing both extension and inheritance in command.rb
+* Rewrite splash screen to focus on navigability of web development
+* How do we recommend people do view templating? Do we want generators?
+* How do we recommend people do data access? Do we want generators?
 * How do we recommend people organize their command classes?
 * Add `rake routes` once Hanami::Router 2.0 supports it
 * Support `.json` or `.html` formats in URL
