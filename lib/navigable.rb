@@ -5,6 +5,7 @@ require 'rack/bodyparser'
 require 'hanami/router'
 require 'json'
 require 'thor'
+require 'base64'
 
 require 'navigable/version'
 require 'navigable/generators/new'

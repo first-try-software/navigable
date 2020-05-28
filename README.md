@@ -1,4 +1,4 @@
-<img src="splash.png">
+<img src="assets/splash/splash.png">
 
 # Navigable
 

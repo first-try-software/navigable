@@ -1,0 +1,66 @@
+{
+  "version": "0.2.0",
+  "configurations": [{
+      "name": "Start Navigable server",
+      "type": "Ruby",
+      "request": "launch",
+      "cwd": "${workspaceRoot}",
+      "program": "/Users/alan/.rbenv/versions/2.7.0/bin/rackup",
+      "args": [
+        "test/config.ru"
+      ]
+    },
+    {
+      "name": "Debug Navigable server",
+      "type": "Ruby",
+      "request": "launch",
+      "cwd": "${workspaceRoot}",
+      "useBundler": true,
+      "pathToBundler": "/Users/alan/.rbenv/versions/2.7.0/bin/bundler",
+      "pathToRDebugIDE": "/Users/alan/.rbenv/versions/2.7.0/lib/ruby/gems/2.7.0/gems/ruby-debug-ide-0.7.2/bin/rdebug-ide",
+      "program": "/Users/alan/.rbenv/versions/2.7.0/bin/rackup",
+      "args": [
+        "test/config.ru"
+      ]
+    },
+    {
+      "name": "Run RSpec - all",
+      "type": "Ruby",
+      "request": "launch",
+      "cwd": "${workspaceRoot}",
+      "program": "/Users/alan/.rbenv/versions/2.7.0/bin/rspec",
+      "args": [
+        "--pattern",
+        "${workspaceRoot}/spec/**/*_rspec.rb"
+      ]
+    },
+    {
+      "name": "Debug RSpec - open spec file",
+      "type": "Ruby",
+      "request": "launch",
+      "cwd": "${workspaceRoot}",
+      "useBundler": true,
+      "pathToBundler": "/Users/alan/.rbenv/versions/2.7.0/bin/bundler",
+      "pathToRDebugIDE": "/Users/alan/.rbenv/versions/2.7.0/lib/ruby/gems/2.7.0/gems/ruby-debug-ide-0.7.2/bin/rdebug-ide",
+      "debuggerPort": "1235",
+      "program": "/Users/alan/.rbenv/versions/2.7.0/bin/rspec",
+      "args": [
+        "${file}"
+      ]
+    },
+    {
+      "name": "Debug RSpec - open spec file on a certain line",
+      "type": "Ruby",
+      "request": "launch",
+      "cwd": "${workspaceRoot}",
+      "useBundler": true,
+      "pathToBundler": "/Users/alan/.rbenv/versions/2.7.0/bin/bundler",
+      "pathToRDebugIDE": "/Users/alan/.rbenv/versions/2.7.0/lib/ruby/gems/2.7.0/gems/ruby-debug-ide-0.7.2/bin/rdebug-ide",
+      "debuggerPort": "1235",
+      "program": "/Users/alan/.rbenv/versions/2.7.0/bin/rspec",
+      "args": [
+        "${file}:${lineNumber}"
+      ]
+    }
+  ]
+}
