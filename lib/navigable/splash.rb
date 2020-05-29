@@ -7,7 +7,7 @@ module Navigable
     FILES = {
       html: "splash.html.erb",
       font: "font.woff",
-      image: "splash.png"
+      image: "navigable.png"
     }
 
     def self.call(env)

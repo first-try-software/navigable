@@ -15,7 +15,7 @@ RSpec.describe Navigable::Splash do
     it 'loads the splash file' do
       call
 
-      expect(File).to have_received(:read).with(a_string_matching('/../../assets/splash.html.erb'))
+      expect(File).to have_received(:read).with(a_string_matching('/../../assets/splash/splash.html.erb'))
     end
 
     it 'processes the splash file with ERB' do
