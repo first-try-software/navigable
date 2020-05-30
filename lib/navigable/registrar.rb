@@ -23,7 +23,6 @@ module Navigable
     def register
       raise InvalidRoute unless valid_route?
 
-      print_route
       router.public_send(verb, path, to: command)
     end
 
@@ -64,10 +63,6 @@ module Navigable
       path = "#{path}/:#{name}_id" if segments.length > 0
 
       action_path(segments, path)
-    end
-
-    def print_route
-      puts "#{verb.to_s.upcase.rjust(6, ' ')} #{path.ljust(50, ' ')}  =>  #{command}"
     end
   end
 end

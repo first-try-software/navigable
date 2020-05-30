@@ -11,7 +11,6 @@ module Navigable
     def server
       Navigable::Generators::Server.start
     end
-
     map 's' => :server
     map ahoy: :server
 
@@ -19,19 +18,21 @@ module Navigable
     def start
       Navigable::Generators::Start.start
     end
-
     map asea: :start
 
     desc 'stop', 'Stops the Navigable server daemon'
     def stop
       Navigable::Generators::Stop.start
     end
-
     map ashore: :stop
 
     desc 'open', 'Opens the current navigable application in the browser'
     def open
       Navigable::Generators::Open.start
     end
+
+    desc 'generate', 'Generates predefined classes'
+    subcommand 'generate', Navigable::Generate
+    map 'g' => :generate
   end
 end

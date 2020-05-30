@@ -4,6 +4,8 @@
 
 Navigable is an opinionated extension of [Hanami::Router](https://github.com/hanami/router) that uses convention and auto-loading to connect restful URIs to [Command](https://en.wikipedia.org/wiki/Command_pattern) classes. When a command class is loaded into memory, it automatically registers a corresponding route with the router. When a request is received, Navigable instantiates and executes the associated Command, which renders the appropriate response to the client.
 
+The internal organization of a Navigable application is resource centric, not framework centric.
+
 ## TODO
 
 * Feels weird managing both extension and inheritance in command.rb

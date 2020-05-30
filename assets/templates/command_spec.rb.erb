@@ -1,0 +1,19 @@
+require_relative '../../../resources/<%= @resource_name %>/<%= @action_name %>'
+
+RSpec.describe <%= @resource_klass %>::<%= @action_klass %> do
+  subject(:command) { described_class.new(params) }
+
+  let(:params) { {} }
+
+  describe '#execute' do
+    subject(:execute) { command.execute }
+
+    before do
+      allow(command).to receive(:render)
+
+      execute
+    end
+
+    it 'renders a response'
+  end
+end

@@ -48,6 +48,21 @@ RSpec.describe Navigable::Generators::New do
     end
   end
 
+  describe '#initialize_rspec' do
+    subject(:initialize_rspec) { generator.initialize_rspec }
+
+    before { initialize_rspec }
+
+    it 'prints a message' do
+      expect(generator).to have_received(:puts).with(a_kind_of(String))
+    end
+
+    it 'runs bundle exec rspec --init inside the app directory' do
+      expect(generator).to have_received(:inside).with(app_name)
+      expect(generator).to have_received(:run).with('bundle exec rspec --init')
+    end
+  end
+
   describe '#usage' do
     subject(:usage) { generator.usage }
 

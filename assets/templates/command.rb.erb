@@ -1,0 +1,9 @@
+require_relative '../command'
+
+module <%= @resource_klass %>
+  class <%= @action_klass %> < Command
+    def execute
+      render
+    end
+  end
+end

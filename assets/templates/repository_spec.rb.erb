@@ -1,0 +1,44 @@
+require_relative '../../../resources/<%= @resource_name %>/repository'
+
+RSpec.describe <%= @resource_klass %>::Repository do
+  subject(:repository) { described_class }
+
+  describe '.all' do
+    subject(:all) { repository.all }
+
+    it 'retrieves all the objects'
+  end
+
+  describe '.find' do
+    subject(:find) { repository.find(id) }
+
+    let(:id) { 'id' }
+
+    it 'retrieves a specific object'
+  end
+
+  describe '.insert' do
+    subject(:insert) { repository.insert(object) }
+
+    let(:object) { {} }
+
+    it 'adds a new object'
+  end
+
+  describe '.update' do
+    subject(:update) { repository.update(id, values) }
+
+    let(:id) { 'id' }
+    let(:values) { {} }
+
+    it 'updates a specific record'
+  end
+
+  describe '.remove' do
+    subject(:remove) { repository.remove }
+
+    let(:id) { 'id' }
+
+    it 'removes a specific record'
+  end
+end

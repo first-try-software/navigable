@@ -48,4 +48,12 @@ RSpec.describe Navigable::CLI do
 
     it_behaves_like 'a cli command', Navigable::Generators::Open
   end
+
+  describe '#generate' do
+    let(:command) { :generate }
+    let(:command_args) { ['resource', 'posts'] }
+    let(:generator_arg) { ['posts'] }
+
+    it_behaves_like 'a cli command', Navigable::Generators::Resource
+  end
 end

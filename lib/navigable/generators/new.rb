@@ -25,6 +25,14 @@ module Navigable
         puts
       end
 
+      def initialize_rspec
+        puts 'Loading cargo... (Initializing RSpec...)'
+        inside(app_name) do
+          run('bundle exec rspec --init')
+        end
+        puts
+      end
+
       def usage
         run('navigable help', verbose: false)
       end

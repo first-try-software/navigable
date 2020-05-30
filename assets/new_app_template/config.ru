@@ -1,6 +1,6 @@
 require 'navigable'
 
-Dir.glob("commands/**/*.rb") do |f|
+Dir.glob("resources/**/*.rb") do |f|
   require_relative f.gsub('.rb', '')
 end
 
