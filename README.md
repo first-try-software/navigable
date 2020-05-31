@@ -22,6 +22,8 @@ The internal organization of a Navigable application is resource centric, not fr
   - url_param :post_id
 * named command parameters?
   - param permitting
+* initializers in generated resources?
+  - resource generator passed field names
 * Add documenation comments & generate docs
 * Add to CI
 * Add to CodeClimate
