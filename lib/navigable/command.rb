@@ -2,7 +2,7 @@
 
 module Navigable
   module Command
-    EXECUTE_NOT_IMPLEMENTED_MESSAGE = 'Class must implement `execute` method or configure an alternative with `responds_with_method`.'
+    EXECUTE_NOT_IMPLEMENTED_MESSAGE = 'Class must implement `execute` method.'
 
     def self.extended(base)
       base.class_eval do
