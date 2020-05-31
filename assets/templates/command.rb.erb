@@ -2,6 +2,13 @@ require_relative '../command'
 
 module <%= @resource_klass %>
   class <%= @action_klass %> < Command
+<% if ['show', 'delete'].include?(@action_name) %>
+    attr_reader :id
+
+    def initialize(params)
+      @id = params[:id]
+    end
+<% end %>
     def execute
       render
     end

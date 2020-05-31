@@ -10,15 +10,14 @@ The internal organization of a Navigable application is resource centric, not fr
 
 * Feels weird managing both extension and inheritance in command.rb
 * How do we encourage separation of concerns inside the application?
-* How do we recommend people do view templating? Do we want generators?
 * How do we recommend people do data access? Do we want generators?
-* How do we recommend people organize their command classes?
 * Add `rake routes` once Hanami::Router 2.0 supports it
 * Support `.json` or `.html` formats in URL
 * Provide headers to client in case they need them (like for auth)
 * Allow people to add their own middleware
 * Think about whether or not resources are singular or plural
   - Should `posts_id` be `post_id`?
+  - Generated resources
 * Modules extend Navigable::Namespace to become namespaces with URL params
   - url_param :post_id
 * named command parameters?
