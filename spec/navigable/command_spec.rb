@@ -19,10 +19,6 @@ RSpec.describe Navigable::Command do
       expect { extended_object }.not_to raise_error
     end
 
-    it 'defines a render method' do
-      expect { extended_object.render }.not_to raise_error
-    end
-
     it 'defines an execute method that raise an error' do
       expect { extended_object.execute }.to raise_error(NotImplementedError)
     end
@@ -108,17 +104,89 @@ RSpec.describe Navigable::Command do
 
       before do
         allow(Command).to receive(:new).and_call_original
-
-        call
       end
 
       it 'instantiates a command' do
+        call
+
         expect(Command).to have_received(:new).with(
           search: 'toast',
           title: 'title',
           description: 'description',
           id: '123'
         )
+      end
+
+      context 'and the command executes successfully' do
+        before do
+          Command.class_eval do
+            def execute; successfully({}); end
+          end
+        end
+
+        it 'renders a successful response' do
+          expect(call).to match_array([200, { 'Content-Type' => 'application/json' }, [a_kind_of(String)]])
+        end
+      end
+
+      context 'and the command fails to validate' do
+        before do
+          Command.class_eval do
+            def execute; failed_to_validate({}); end
+          end
+        end
+
+        it 'renders a successful response' do
+          expect(call).to match_array([400, { 'Content-Type' => 'application/json' }, [a_string_matching('"error":')]])
+        end
+      end
+
+      context 'and the command fails to find' do
+        before do
+          Command.class_eval do
+            def execute; failed_to_find({}); end
+          end
+        end
+
+        it 'renders a successful response' do
+          expect(call).to match_array([404, { 'Content-Type' => 'application/json' }, [a_string_matching('"error":')]])
+        end
+      end
+
+      context 'and the command fails to create' do
+        before do
+          Command.class_eval do
+            def execute; failed_to_create({}); end
+          end
+        end
+
+        it 'renders a successful response' do
+          expect(call).to match_array([500, { 'Content-Type' => 'application/json' }, [a_string_matching(/"error":.*creating/)]])
+        end
+      end
+
+      context 'and the command fails to update' do
+        before do
+          Command.class_eval do
+            def execute; failed_to_update({}); end
+          end
+        end
+
+        it 'renders a successful response' do
+          expect(call).to match_array([500, { 'Content-Type' => 'application/json' }, [a_string_matching(/"error":.*updating/)]])
+        end
+      end
+
+      context 'and the command fails to delete' do
+        before do
+          Command.class_eval do
+            def execute; failed_to_delete({}); end
+          end
+        end
+
+        it 'renders a successful response' do
+          expect(call).to match_array([500, { 'Content-Type' => 'application/json' }, [a_string_matching(/"error":.*deleting/)]])
+        end
       end
     end
   end

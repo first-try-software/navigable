@@ -12,12 +12,38 @@ module Navigable
           @params = request_params
         end
 
-        def render(response_params = {})
-          Response.new(response_params)
-        end
-
         def execute
           raise NotImplementedError.new(EXECUTE_NOT_IMPLEMENTED_MESSAGE)
+        end
+
+        private
+
+        def successfully(entity)
+          render status: 200, json: entity
+        end
+
+        def failed_to_validate(entity)
+          render status: 400, json: { error: "Invalid parameters for entity: #{entity.inspect}" }
+        end
+
+        def failed_to_find(entity)
+          render status: 404, json: { error: "Entity not found: #{entity.inspect}" }
+        end
+
+        def failed_to_create(entity)
+          render status: 500, json: { error: "There was a problem creating the entity: #{entity.inspect}" }
+        end
+
+        def failed_to_update(entity)
+          render status: 500, json: { error: "There was a problem updating the entity: #{entity.inspect}" }
+        end
+
+        def failed_to_delete(entity)
+          render status: 500, json: { error: "There was a problem deleting the entity: #{entity.inspect}" }
+        end
+
+        def render(response_params = {})
+          Response.new(response_params)
         end
       end
     end

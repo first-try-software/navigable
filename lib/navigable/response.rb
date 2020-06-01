@@ -35,7 +35,7 @@ module Navigable
 
     def json
       return unless params[:json]
-      return params[:json] if valid_json?(params[:json])
+      return params[:json].to_s if valid_json?(params[:json])
 
       params[:json].to_json
     end
