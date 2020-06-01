@@ -27,10 +27,11 @@ Gem::Specification.new do |spec|
   spec.add_dependency "hanami-router", "= 2.0.0.alpha3"
   spec.add_dependency "rack-bodyparser", "~> 1.0"
   spec.add_dependency "thor", "~> 1.0"
+  spec.add_dependency "rspec", "~> 3.0"
+  spec.add_dependency "plural", "~> 0.1"
 
   spec.add_development_dependency "bundler", "~> 2.0"
   spec.add_development_dependency "rake", "~> 12.0"
-  spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "rspec_junit_formatter", "~>0.4"
   spec.add_development_dependency "simplecov", "~>0.16"
   spec.add_development_dependency "rack-test", "~>1.1"
