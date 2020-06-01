@@ -20,6 +20,7 @@ require 'navigable/registrar'
 require 'navigable/splash'
 require 'navigable/application'
 require 'navigable/response'
+require 'navigable/entity'
 require 'navigable/command'
 
 module Navigable
