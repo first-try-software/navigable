@@ -13,12 +13,8 @@ module Navigable
       @attr_accessors ||= []
     end
 
-    attr_accessor :id, :created_at, :updated_at
-
-    def initialize(params)
-      @id = params[:id]
-      @created_at = params[:created_at]
-      @updated_at  = params[:updated_at]
+    def valid?
+      true
     end
 
     def attributes
@@ -27,8 +23,16 @@ module Navigable
       end
     end
 
+    def merge(new_attributes)
+      self.class.new(attributes.merge(new_attributes))
+    end
+
     def to_s
       "#{self.class.name}: #{attributes}"
+    end
+
+    def to_json(*args)
+      attributes.to_json(*args)
     end
   end
 end

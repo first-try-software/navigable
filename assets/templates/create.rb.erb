@@ -1,0 +1,31 @@
+# frozen-string-literal: true
+
+require_relative '../application_command'
+require_relative './<%= @entity_name %>'
+require_relative './repository'
+
+module <%= @resource_klass %>
+  class Create < ApplicationCommand
+    def execute
+      return failed_to_validate(new_<%= @entity_name %>) unless new_<%= @entity_name %>.valid?
+      return failed_to_create(new_<%= @entity_name %>) if created_<%= @entity_name %>.nil?
+
+      successfully created_<%= @entity_name %>
+    end
+
+    private
+
+    def new_<%= @entity_name %>
+      @new_<%= @entity_name %> ||= <%= @entity_klass %>.new(<%= @entity_name %>_params)
+    end
+
+    def created_<%= @entity_name %>
+      @created_<%= @entity_name %> ||= Repository.insert(new_<%= @entity_name %>)
+    end
+
+    def <%= @entity_name %>_params
+      # Slice the params to use to create <%= @entity_klass %>
+      # params.slice(:title, :description)
+    end
+  end
+end

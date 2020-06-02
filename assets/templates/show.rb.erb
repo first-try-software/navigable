@@ -1,0 +1,29 @@
+# frozen-string-literal: true
+
+require_relative '../application_command'
+require_relative './<%= @entity_name %>'
+require_relative './repository'
+
+module <%= @resource_klass %>
+  class Show < ApplicationCommand
+    def execute
+      return failed_to_find(missing_<%= @entity_name %>) if found_<%= @entity_name %>.nil?
+
+      successfully found_<%= @entity_name %>
+    end
+
+    private
+
+    def found_<%= @entity_name %>
+      @found_<%= @entity_name %> ||= Repository.find(id)
+    end
+
+    def missing_<%= @entity_name %>
+      <%= @entity_klass %>.new(id: id)
+    end
+
+    def id
+      params[:id]
+    end
+  end
+end

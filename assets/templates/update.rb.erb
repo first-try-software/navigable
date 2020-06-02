@@ -1,0 +1,44 @@
+# frozen-string-literal: true
+
+require_relative '../application_command'
+require_relative './<%= @entity_name %>'
+require_relative './repository'
+
+module <%= @resource_klass %>
+  class Update < ApplicationCommand
+    def execute
+      return failed_to_find(missing_<%= @entity_name %>) if existing_<%= @entity_name %>.nil?
+      return failed_to_validate(edited_<%= @entity_name %>) unless edited_<%= @entity_name %>.valid?
+      return failed_to_update(edited_<%= @entity_name %>) if updated_<%= @entity_name %>.nil?
+
+      successfully updated_<%= @entity_name %>
+    end
+
+    private
+
+    def existing_<%= @entity_name %>
+      @existing_<%= @entity_name %> ||= Repository.find(id)
+    end
+
+    def edited_<%= @entity_name %>
+      @edited_<%= @entity_name %> ||= existing_<%= @entity_name %>.merge(<%= @entity_name %>_params)
+    end
+
+    def updated_<%= @entity_name %>
+      @updated_<%= @entity_name %> ||= Repository.update(edited_<%= @entity_name %>)
+    end
+
+    def missing_<%= @entity_name %>
+      <%= @entity_klass %>.new(<%= @entity_name %>_params)
+    end
+
+    def <%= @entity_name %>_params
+      # Slice the params to use to update <%= @entity_klass %>
+      # params.slice(:id, :title, :description)
+    end
+
+    def id
+      params[:id]
+    end
+  end
+end

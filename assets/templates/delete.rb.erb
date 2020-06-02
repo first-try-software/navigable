@@ -1,0 +1,34 @@
+# frozen-string-literal: true
+
+require_relative '../application_command'
+require_relative './<%= @entity_name %>'
+require_relative './repository'
+
+module <%= @resource_klass %>
+  class Delete < ApplicationCommand
+    def execute
+      return failed_to_find(missing_<%= @entity_name %>) if existing_<%= @entity_name %>.nil?
+      return failed_to_delete(existing_<%= @entity_name %>) if deleted_<%= @entity_name %>.nil?
+
+      successfully deleted_<%= @entity_name %>
+    end
+
+    private
+
+    def existing_<%= @entity_name %>
+      @existing_<%= @entity_name %> ||= Repository.find(id)
+    end
+
+    def deleted_<%= @entity_name %>
+      @deleted_<%= @entity_name %> ||= Repository.delete(id)
+    end
+
+    def missing_<%= @entity_name %>
+      <%= @entity_klass %>.new(id: id)
+    end
+
+    def id
+      params[:id]
+    end
+  end
+end

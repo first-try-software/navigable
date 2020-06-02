@@ -1,0 +1,21 @@
+require_relative '../../../resources/<%= @resource_name %>/index'
+
+RSpec.describe <%= @resource_klass %>::Index do
+  subject(:command) { described_class.new(params) }
+
+  let(:params) { {} }
+
+  describe '#execute' do
+    subject(:execute) { command.execute }
+
+    let(:found_<%= @entity_name %>s) { [instance_double(<%= @entity_klass %>)] }
+
+    before do
+      allow(<%= @resource_klass %>::Repository).to receive(:all).and_return(found_<%= @entity_name %>s)
+    end
+
+    it 'returns a 200 response' do
+      expect(execute).to have_attributes(status: 200)
+    end
+  end
+end

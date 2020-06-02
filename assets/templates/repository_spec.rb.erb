@@ -6,7 +6,7 @@ RSpec.describe <%= @resource_klass %>::Repository do
   describe '.all' do
     subject(:all) { repository.all }
 
-    it 'retrieves all the objects'
+    it 'retrieves all the entities'
   end
 
   describe '.find' do
@@ -14,31 +14,63 @@ RSpec.describe <%= @resource_klass %>::Repository do
 
     let(:id) { 'id' }
 
-    it 'retrieves a specific object'
+    context 'when the entity is NOT found' do
+      it 'returns nil'
+    end
+
+    context 'when the entity is found' do
+      it 'returns the entity'
+    end
   end
 
   describe '.insert' do
-    subject(:insert) { repository.insert(object) }
+    subject(:insert) { repository.insert(entity) }
 
-    let(:object) { {} }
+    let(:entity) { instance_double(<%= @entity_klass %>) }
 
-    it 'adds a new object'
+    context 'always' do
+      it 'assigns created_at timestamp'
+      it 'assigns updated_at timestamp'
+    end
+
+    context 'when the entity is NOT created' do
+      it 'returns nil'
+    end
+
+    context 'when the entity is created' do
+      it 'returns the created entity'
+    end
   end
 
   describe '.update' do
-    subject(:update) { repository.update(id, values) }
+    subject(:update) { repository.update(entity) }
 
-    let(:id) { 'id' }
-    let(:values) { {} }
+    let(:entity) { instance_double(<%= @entity_klass %>) }
 
-    it 'updates a specific record'
+    context 'always' do
+      it 'updates the updated_at timestamp'
+    end
+
+    context 'when the entity is NOT updated' do
+      it 'returns nil'
+    end
+
+    context 'when the entity is updated' do
+      it 'returns the updated entity'
+    end
   end
 
-  describe '.remove' do
-    subject(:remove) { repository.remove }
+  describe '.delete' do
+    subject(:delete) { repository.delete(id) }
 
     let(:id) { 'id' }
 
-    it 'removes a specific record'
+    context 'when the entity is NOT deleted' do
+      it 'returns nil'
+    end
+
+    context 'when the entity is deleted' do
+      it 'returns the deleted entity'
+    end
   end
 end

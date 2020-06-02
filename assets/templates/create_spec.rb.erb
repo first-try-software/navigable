@@ -1,0 +1,49 @@
+require_relative '../../../resources/<%= @resource_name %>/create'
+
+RSpec.describe <%= @resource_klass %>::Create do
+  subject(:command) { described_class.new(params) }
+
+  let(:params) { { title: 'title', description: 'description' } }
+
+  describe '#execute' do
+    subject(:execute) { command.execute }
+
+    let(:new_<%= @entity_name %>) { instance_double(<%= @entity_klass %>, valid?: valid?) }
+
+    before do
+      allow(<%= @entity_klass %>).to receive(:new).and_return(new_<%= @entity_name %>)
+    end
+
+    context 'when the new <%= @entity_name %> is NOT valid' do
+      let(:valid?) { false }
+
+      it 'returns a 400 response' do
+        expect(execute).to have_attributes(status: 400)
+      end
+    end
+
+    context 'when the new <%= @entity_name %> is valid' do
+      let(:valid?) { true }
+
+      before do
+        allow(<%= @resource_klass %>::Repository).to receive(:insert).and_return(created_<%= @entity_name %>)
+      end
+
+      context 'and the new <%= @entity_name %> is NOT created' do
+        let(:created_<%= @entity_name %>) { nil }
+
+        it 'returns a 500 response' do
+          expect(execute).to have_attributes(status: 500)
+        end
+      end
+
+      context 'and the new <%= @entity_name %> is created' do
+        let(:created_<%= @entity_name %>) { instance_double(<%= @entity_klass %>) }
+
+        it 'returns a 200 response' do
+          expect(execute).to have_attributes(status: 200)
+        end
+      end
+    end
+  end
+end

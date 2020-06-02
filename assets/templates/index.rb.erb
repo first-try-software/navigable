@@ -1,0 +1,19 @@
+# frozen-string-literal: true
+
+require_relative '../application_command'
+require_relative './<%= @entity_name %>'
+require_relative './repository'
+
+module <%= @resource_klass %>
+  class Index < ApplicationCommand
+    def execute
+      successfully found_<%= @resource_name %>
+    end
+
+    private
+
+    def found_<%= @resource_name %>
+      @found_<%= @resource_name %> ||= Repository.all
+    end
+  end
+end

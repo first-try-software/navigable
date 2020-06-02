@@ -6,6 +6,8 @@ require 'hanami/router'
 require 'json'
 require 'thor'
 require 'base64'
+require 'inflector'
+require 'core_extension'
 
 require 'navigable/version'
 require 'navigable/generators/new'

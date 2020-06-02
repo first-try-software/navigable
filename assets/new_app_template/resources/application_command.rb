@@ -1,5 +1,5 @@
 require 'navigable'
 
-class Command
+class ApplicationCommand
   extend Navigable::Command
 end
