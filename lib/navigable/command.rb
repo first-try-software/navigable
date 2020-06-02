@@ -18,27 +18,37 @@ module Navigable
 
         private
 
+        def all_listeners
+          (Navigable::Command.default_listeners + self.class.listeners).map { |listener| listener.new }
+        end
+
         def successfully(entity)
+          all_listeners.each { |listener| listener.succeeded(entity) }
           render status: 200, json: entity
         end
 
         def failed_to_validate(entity)
+          all_listeners.each { |listener| listener.failed_to_validate(entity) }
           render status: 400, json: { error: "Invalid parameters for entity: #{entity.inspect}" }
         end
 
         def failed_to_find(entity)
+          all_listeners.each { |listener| listener.failed_to_find(entity) }
           render status: 404, json: { error: "Entity not found: #{entity.inspect}" }
         end
 
         def failed_to_create(entity)
+          all_listeners.each { |listener| listener.failed_to_create(entity) }
           render status: 500, json: { error: "There was a problem creating the entity: #{entity.inspect}" }
         end
 
         def failed_to_update(entity)
+          all_listeners.each { |listener| listener.failed_to_update(entity) }
           render status: 500, json: { error: "There was a problem updating the entity: #{entity.inspect}" }
         end
 
         def failed_to_delete(entity)
+          all_listeners.each { |listener| listener.failed_to_delete(entity) }
           render status: 500, json: { error: "There was a problem deleting the entity: #{entity.inspect}" }
         end
 
@@ -46,6 +56,22 @@ module Navigable
           Response.new(response_params)
         end
       end
+    end
+
+    def self.default_listeners
+      @default_listeners ||= []
+    end
+
+    def self.add_default_listener(listener)
+      default_listeners << listener
+    end
+
+    def listeners
+      @listeners ||= []
+    end
+
+    def add_listener(listener)
+      listeners << listener
     end
 
     def inherited(child)

@@ -1,16 +1,18 @@
 require_relative '../../lib/navigable/entity'
 
-class Post < Navigable::Entity
-  attr_accessor :title
-
-  def initialize(params)
-    @title = params[:title]
-    super
-  end
-end
-
 RSpec.describe Navigable::Entity do
-  subject(:entity) { Post.new(params) }
+  subject(:entity) { entity_klass.new(params) }
+
+  let(:entity_klass) do
+    Class.new(Navigable::Entity) do
+      attr_accessor :title
+
+      def initialize(params)
+        @title = params[:title]
+        super
+      end
+    end
+  end
 
   let(:params) do
     {
@@ -25,6 +27,10 @@ RSpec.describe Navigable::Entity do
   let(:title) { 'title' }
   let(:created_at) { 'created_at' }
   let(:updated_at) { 'updated_at' }
+
+  before do
+    allow(entity_klass).to receive(:name).and_return('Post')
+  end
 
   describe '#attributes' do
     subject(:attributes) { entity.attributes }
