@@ -1,4 +1,4 @@
-require_relative '../../../resources/<%= @resource_name %>/<%= @entity_name %>'
+require_relative '../../../domain/<%= @resource_name %>/<%= @entity_name %>'
 
 RSpec.describe <%= @entity_klass %> do
   subject(:entity) { <%= @entity_klass %>.new }

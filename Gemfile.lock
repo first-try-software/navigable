@@ -3,7 +3,7 @@ PATH
   specs:
     navigable (0.1.0)
       hanami-router (= 2.0.0.alpha3)
-      plural (~> 0.1)
+      inflector (~> 0.0.1)
       rack-bodyparser (~> 1.0)
       rspec (~> 3.0)
       thor (~> 1.0)
@@ -18,12 +18,12 @@ GEM
       mustermann-contrib (~> 1.0)
       rack (~> 2.0)
     hansi (0.2.0)
+    inflector (0.0.1)
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
     mustermann-contrib (1.1.1)
       hansi (~> 0.2.0)
       mustermann (= 1.1.1)
-    plural (0.1.0)
     rack (2.2.2)
     rack-bodyparser (1.0.0)
       rack

@@ -4,19 +4,19 @@ require_relative './command'
 
 module Navigable
   class Listener
-    def self.add_default_listener
+    def self.listen_to_all_commands
       Navigable::Command.add_default_listener(self)
     end
 
-    def self.add_listener(command_klass)
+    def self.listen_to(command_klass)
       command_klass.add_listener(self)
     end
 
-    def succeeded(entity); end
-    def failed_to_validate(entity); end
-    def failed_to_find(entity); end
-    def failed_to_create(entity); end
-    def failed_to_update(entity); end
-    def failed_to_delete(entity); end
+    def on_success(entity); end
+    def on_failure_to_validate(entity); end
+    def on_failure_to_find(entity); end
+    def on_failure_to_create(entity); end
+    def on_failure_to_update(entity); end
+    def on_failure_to_delete(entity); end
   end
 end

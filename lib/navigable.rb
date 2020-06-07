@@ -24,6 +24,7 @@ require 'navigable/application'
 require 'navigable/response'
 require 'navigable/entity'
 require 'navigable/listener'
+require 'navigable/command/params'
 require 'navigable/command'
 
 module Navigable

@@ -48,20 +48,20 @@ RSpec.describe Navigable::Command do
   describe '.add_default_listener' do
     let(:default_listener_klass) do
       Class.new(Navigable::Listener) do
-        add_default_listener
+        listen_to_all_commands
       end
     end
 
-    it 'adds a listner to the default listeners array on the module itself' do
-      expect(Navigable::Command.default_listeners).to include(default_listener_klass)
+    it 'adds a listener to the default listeners array on the module itself' do
+      expect(Navigable::Command.default_listener_klasses).to include(default_listener_klass)
     end
   end
 
-  describe '.add_listener' do
+  describe '.listen_to' do
     let(:listener_klass) { Class.new(Navigable::Listener) }
 
     before do
-      listener_klass.add_listener(command_klass)
+      listener_klass.listen_to(command_klass)
     end
 
     it 'adds a listener to the listeners array on the class instance' do

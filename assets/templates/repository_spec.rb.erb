@@ -1,4 +1,4 @@
-require_relative '../../../resources/<%= @resource_name %>/repository'
+require_relative '../../../domain/<%= @resource_name %>/repository'
 
 RSpec.describe <%= @resource_klass %>::Repository do
   subject(:repository) { described_class }

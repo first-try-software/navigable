@@ -5,11 +5,13 @@ RSpec.describe Navigable::Entity do
 
   let(:entity_klass) do
     Class.new(Navigable::Entity) do
-      attr_accessor :title
+      attr_accessor :id, :title, :created_at, :updated_at
 
       def initialize(params)
+        @id = params[:id]
         @title = params[:title]
-        super
+        @created_at = params[:created_at]
+        @updated_at = params[:updated_at]
       end
     end
   end

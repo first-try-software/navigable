@@ -1,9 +1,10 @@
-require_relative '../../../resources/<%= @resource_name %>/index'
+require_relative '../../../domain/<%= @resource_name %>/index'
 
 RSpec.describe <%= @resource_klass %>::Index do
-  subject(:command) { described_class.new(params) }
+  subject(:command) { described_class.new(params, listeners) }
 
   let(:params) { {} }
+  let(:listeners) { [] }
 
   describe '#execute' do
     subject(:execute) { command.execute }

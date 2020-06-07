@@ -3,6 +3,7 @@ RSpec.describe Navigable::Generators::Resource do
 
   let(:args) { [resource_name] }
   let(:resource_name) { 'resource_name' }
+  let(:plural_resource_name) { 'resource_names' }
 
   before do
     allow(generator).to receive(:puts)
@@ -45,14 +46,14 @@ RSpec.describe Navigable::Generators::Resource do
 
     it 'creates command classes and specs' do
       actions.each do |action|
-        expect(generator).to have_received(:template).with('command.rb.erb', "resources/#{resource_name}/#{action}.rb")
-        expect(generator).to have_received(:template).with('command_spec.rb.erb', "spec/resources/#{resource_name}/#{action}_spec.rb")
+        expect(generator).to have_received(:template).with("#{action}.rb.erb", "domain/#{plural_resource_name}/#{action}.rb")
+        expect(generator).to have_received(:template).with("#{action}_spec.rb.erb", "spec/domain/#{plural_resource_name}/#{action}_spec.rb")
       end
     end
 
     it 'creates repository class and spec' do
-      expect(generator).to have_received(:template).with('repository.rb.erb', "resources/#{resource_name}/repository.rb")
-      expect(generator).to have_received(:template).with('repository_spec.rb.erb', "spec/resources/#{resource_name}/repository_spec.rb")
+      expect(generator).to have_received(:template).with('repository.rb.erb', "domain/#{plural_resource_name}/repository.rb")
+      expect(generator).to have_received(:template).with('repository_spec.rb.erb', "spec/domain/#{plural_resource_name}/repository_spec.rb")
     end
   end
 
