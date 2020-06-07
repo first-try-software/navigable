@@ -1,15 +1,15 @@
 RSpec.describe Navigable::Generate do
   subject(:cli) { described_class.new }
 
-  let(:command_args) { [] }
+  let(:action_args) { [] }
   let(:generator_arg) { no_args }
 
-  shared_examples 'a cli command' do |generator_class|
+  shared_examples 'a cli action' do |generator_class|
 
     before do
       allow(generator_class).to receive(:start)
 
-      cli.public_send(command, *command_args)
+      cli.public_send(action, *action_args)
     end
 
     it "delegates to #{generator_class}" do
@@ -18,10 +18,10 @@ RSpec.describe Navigable::Generate do
   end
 
   describe '#resource' do
-    let(:command) { :resource }
-    let(:command_args) { ['posts'] }
+    let(:action) { :resource }
+    let(:action_args) { ['posts'] }
     let(:generator_arg) { ['posts'] }
 
-    it_behaves_like 'a cli command', Navigable::Generators::Resource
+    it_behaves_like 'a cli action', Navigable::Generators::Resource
   end
 end

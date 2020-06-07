@@ -7,8 +7,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Alan Ridlehoover", "Fito von Zastrow"]
   spec.email         = ["alan@ridlehoover.com", "adolfovon@gmail.com"]
 
-  spec.summary       = %q{Navigable routes RESTful HTTP requests to corresponding command objects.}
-  spec.description   = %q{Navigable is an opinionated, Rack and HttpRouter based tool for connecting HTTP routes to command classes.}
+  spec.summary       = %q{Ahoy! Navigable is a simple, restful framework for API development.}
+  spec.description   = %q{We hold these truths to be self-evident, that not all objects are created equal, that poorly structured code leads to poorly tested code, and that poorly tested code leads to rigid software and fearful engineers.\n\nWe believe a framework should break free of this tyranny. It should be simple, restful, testable, and fast. It can be opinionated. But, it should leverage convention to guide us toward well structured, well tested, maleable code that is truly navigable.}
   spec.homepage      = "https://github.com/first_try/navigable"
   spec.license       = "MIT"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.7.0")

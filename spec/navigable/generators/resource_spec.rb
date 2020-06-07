@@ -44,7 +44,7 @@ RSpec.describe Navigable::Generators::Resource do
       expect(generator).to have_received(:puts).with(a_kind_of(String))
     end
 
-    it 'creates command classes and specs' do
+    it 'creates action classes and specs' do
       actions.each do |action|
         expect(generator).to have_received(:template).with("#{action}.rb.erb", "domain/#{plural_resource_name}/#{action}.rb")
         expect(generator).to have_received(:template).with("#{action}_spec.rb.erb", "spec/domain/#{plural_resource_name}/#{action}_spec.rb")

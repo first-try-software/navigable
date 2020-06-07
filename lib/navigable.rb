@@ -24,8 +24,8 @@ require 'navigable/application'
 require 'navigable/response'
 require 'navigable/entity'
 require 'navigable/listener'
-require 'navigable/command/params'
-require 'navigable/command'
+require 'navigable/action/params'
+require 'navigable/action'
 
 module Navigable
   def self.application

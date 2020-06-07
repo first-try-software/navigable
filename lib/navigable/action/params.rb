@@ -1,7 +1,7 @@
 # frozen-string-literal: true
 
 module Navigable
-  module Command
+  module Action
     class Params
       attr_reader :env
 

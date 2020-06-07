@@ -1,13 +1,13 @@
 require_relative '../../../domain/<%= @resource_name %>/index'
 
 RSpec.describe <%= @resource_klass %>::Index do
-  subject(:command) { described_class.new(params, listeners) }
+  subject(:action) { described_class.new(params, listeners) }
 
   let(:params) { {} }
   let(:listeners) { [] }
 
   describe '#execute' do
-    subject(:execute) { command.execute }
+    subject(:execute) { action.execute }
 
     let(:found_<%= @entity_name %>s) { [instance_double(<%= @entity_klass %>)] }
 

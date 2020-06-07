@@ -1,23 +1,23 @@
-require_relative '../../lib/navigable/command'
+require_relative '../../lib/navigable/action'
 require_relative '../../lib/navigable/response'
 require_relative '../../lib/navigable/listener'
 
-RSpec.describe Navigable::Command do
-  let(:command_klass) do
+RSpec.describe Navigable::Action do
+  let(:action_klass) do
     Class.new do
-      extend Navigable::Command
+      extend Navigable::Action
       def execute; render; end
     end
   end
 
-  let(:no_execute_command_klass) do
+  let(:no_execute_action_klass) do
     Class.new do
-      extend Navigable::Command
+      extend Navigable::Action
     end
   end
 
   describe '.extended' do
-    subject(:extended_object) { no_execute_command_klass.new({}) }
+    subject(:extended_object) { no_execute_action_klass.new({}) }
 
     it 'defines a constructor that accepts params' do
       expect { extended_object }.not_to raise_error
@@ -32,7 +32,7 @@ RSpec.describe Navigable::Command do
     let(:registrar) { instance_double(Navigable::Registrar, register: true) }
     let(:app) { instance_double(Navigable::Application, router: router) }
     let(:router) { instance_double(Hanami::Router) }
-    let(:child) { Class.new(command_klass) }
+    let(:child) { Class.new(action_klass) }
 
     before do
       allow(Navigable::Registrar).to receive(:new).and_return(registrar)
@@ -48,12 +48,12 @@ RSpec.describe Navigable::Command do
   describe '.add_default_listener' do
     let(:default_listener_klass) do
       Class.new(Navigable::Listener) do
-        listen_to_all_commands
+        listen_to_all_actions
       end
     end
 
     it 'adds a listener to the default listeners array on the module itself' do
-      expect(Navigable::Command.default_listener_klasses).to include(default_listener_klass)
+      expect(Navigable::Action.default_listener_klasses).to include(default_listener_klass)
     end
   end
 
@@ -61,11 +61,11 @@ RSpec.describe Navigable::Command do
     let(:listener_klass) { Class.new(Navigable::Listener) }
 
     before do
-      listener_klass.listen_to(command_klass)
+      listener_klass.listen_to(action_klass)
     end
 
     it 'adds a listener to the listeners array on the class instance' do
-      expect(command_klass.listeners).to include(listener_klass)
+      expect(action_klass.listeners).to include(listener_klass)
     end
   end
 
@@ -92,29 +92,29 @@ RSpec.describe Navigable::Command do
     context 'when there are no params' do
       context 'when a responds_with_method has NOT been configured' do
         context 'and there is an execute method' do
-          subject(:call) { command_klass.call(env) }
+          subject(:call) { action_klass.call(env) }
 
-          let(:no_params_command) do
-            instance_double(command_klass, execute: Navigable::Response.new({}))
+          let(:no_params_action) do
+            instance_double(action_klass, execute: Navigable::Response.new({}))
           end
 
           before do
-            allow(command_klass).to receive(:new).and_return(no_params_command)
+            allow(action_klass).to receive(:new).and_return(no_params_action)
 
             call
           end
 
-          it 'instantiates a command' do
-            expect(command_klass).to have_received(:new).with({})
+          it 'instantiates a action' do
+            expect(action_klass).to have_received(:new).with({})
           end
 
-          it 'calls execute on the command' do
-            expect(no_params_command).to have_received(:execute).with(no_args)
+          it 'calls execute on the action' do
+            expect(no_params_action).to have_received(:execute).with(no_args)
           end
         end
 
         context 'and there is NOT an execute method' do
-          subject(:call) { no_execute_command_klass.call(env) }
+          subject(:call) { no_execute_action_klass.call(env) }
 
           it 'raises not implemented' do
             expect { call }.to raise_error(NotImplementedError)
@@ -124,20 +124,20 @@ RSpec.describe Navigable::Command do
     end
 
     context 'when there are params' do
-      subject(:call) { command_klass.call(env) }
+      subject(:call) { action_klass.call(env) }
 
       let(:form_params) { { search: 'toast' } }
       let(:parsed_body) { { 'title' => 'title', 'description' => 'description' } }
       let(:url_params) { { id: '123' } }
 
       before do
-        allow(command_klass).to receive(:new).and_call_original
+        allow(action_klass).to receive(:new).and_call_original
       end
 
-      it 'instantiates a command' do
+      it 'instantiates a action' do
         call
 
-        expect(command_klass).to have_received(:new).with(
+        expect(action_klass).to have_received(:new).with(
           search: 'toast',
           title: 'title',
           description: 'description',
@@ -145,9 +145,9 @@ RSpec.describe Navigable::Command do
         )
       end
 
-      context 'and the command executes successfully' do
+      context 'and the action executes successfully' do
         before do
-          command_klass.class_eval do
+          action_klass.class_eval do
             def execute; successfully({}); end
           end
         end
@@ -157,9 +157,9 @@ RSpec.describe Navigable::Command do
         end
       end
 
-      context 'and the command fails to validate' do
+      context 'and the action fails to validate' do
         before do
-          command_klass.class_eval do
+          action_klass.class_eval do
             def execute; failed_to_validate({}); end
           end
         end
@@ -169,9 +169,9 @@ RSpec.describe Navigable::Command do
         end
       end
 
-      context 'and the command fails to find' do
+      context 'and the action fails to find' do
         before do
-          command_klass.class_eval do
+          action_klass.class_eval do
             def execute; failed_to_find({}); end
           end
         end
@@ -181,9 +181,9 @@ RSpec.describe Navigable::Command do
         end
       end
 
-      context 'and the command fails to create' do
+      context 'and the action fails to create' do
         before do
-          command_klass.class_eval do
+          action_klass.class_eval do
             def execute; failed_to_create({}); end
           end
         end
@@ -193,9 +193,9 @@ RSpec.describe Navigable::Command do
         end
       end
 
-      context 'and the command fails to update' do
+      context 'and the action fails to update' do
         before do
-          command_klass.class_eval do
+          action_klass.class_eval do
             def execute; failed_to_update({}); end
           end
         end
@@ -205,9 +205,9 @@ RSpec.describe Navigable::Command do
         end
       end
 
-      context 'and the command fails to delete' do
+      context 'and the action fails to delete' do
         before do
-          command_klass.class_eval do
+          action_klass.class_eval do
             def execute; failed_to_delete({}); end
           end
         end

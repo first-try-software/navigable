@@ -1,7 +1,7 @@
 # frozen-string-literal: true
 
 module Navigable
-  module Command
+  module Action
     EXECUTE_NOT_IMPLEMENTED_MESSAGE = 'Class must implement `execute` method.'
 
     def self.extended(base)
@@ -56,7 +56,7 @@ module Navigable
     end
 
     def listeners
-      (Navigable::Command.default_listener_klasses + listener_klasses).map { |listener| listener.new }
+      (Navigable::Action.default_listener_klasses + listener_klasses).map { |listener| listener.new }
     end
 
     def self.default_listener_klasses

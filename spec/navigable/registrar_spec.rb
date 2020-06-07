@@ -19,12 +19,12 @@ RSpec.shared_examples 'a registered route' do
   end
 
   it 'registers the route with the router' do
-    expect(router).to have_received(verb).with(path, to: command)
+    expect(router).to have_received(verb).with(path, to: action_klass)
   end
 end
 
 RSpec.describe Navigable::Registrar do
-  subject(:registrar) { described_class.new(command, router) }
+  subject(:registrar) { described_class.new(action_klass, router) }
 
   let(:router) { instance_double(Hanami::Router) }
 
@@ -32,7 +32,7 @@ RSpec.describe Navigable::Registrar do
     subject(:register) { registrar.register }
 
     context 'when the route is not restful' do
-      let(:command) { class NotResful; end; NotResful }
+      let(:action_klass) { class NotResful; end; NotResful }
 
       it 'raises InvalidRoute' do
         expect { register }.to raise_error(Navigable::InvalidRoute)
@@ -40,14 +40,14 @@ RSpec.describe Navigable::Registrar do
     end
 
     context 'when the route is root' do
-      let(:command) { Root }
+      let(:action_klass) { Root }
       let(:verb) { :get }
       let(:path) { '/'}
 
       it_behaves_like 'a registered route'
 
       context 'and the route has a namespace' do
-        let(:command) { module Namespace; class Root; end; end; Namespace::Root }
+        let(:action_klass) { module Namespace; class Root; end; end; Namespace::Root }
 
         it 'raises InvalidRoute' do
           expect { register }.to raise_error(Navigable::InvalidRoute)
@@ -56,7 +56,7 @@ RSpec.describe Navigable::Registrar do
     end
 
     context 'when the route is index' do
-      let(:command) { Posts::Comments::Index }
+      let(:action_klass) { Posts::Comments::Index }
       let(:verb) { :get }
       let(:path) { '/posts/:posts_id/comments'}
 
@@ -64,7 +64,7 @@ RSpec.describe Navigable::Registrar do
     end
 
     context 'when the route is show' do
-      let(:command) { Posts::Comments::Show }
+      let(:action_klass) { Posts::Comments::Show }
       let(:verb) { :get }
       let(:path) { '/posts/:posts_id/comments/:id'}
 
@@ -72,7 +72,7 @@ RSpec.describe Navigable::Registrar do
     end
 
     context 'when the route is create' do
-      let(:command) { Posts::Comments::Create }
+      let(:action_klass) { Posts::Comments::Create }
       let(:verb) { :post }
       let(:path) { '/posts/:posts_id/comments'}
 
@@ -80,7 +80,7 @@ RSpec.describe Navigable::Registrar do
     end
 
     context 'when the route is update' do
-      let(:command) { Posts::Comments::Update }
+      let(:action_klass) { Posts::Comments::Update }
       let(:verb) { :put }
       let(:path) { '/posts/:posts_id/comments/:id'}
 
@@ -88,8 +88,8 @@ RSpec.describe Navigable::Registrar do
     end
 
     context 'when the route is delete' do
-      let(:command) { Posts::Comments::Delete }
-      let(:printed_route) { "DELETE /posts/:posts_id/comments/:id                       =>  #{command}"}
+      let(:action_klass) { Posts::Comments::Delete }
+      let(:printed_route) { "DELETE /posts/:posts_id/comments/:id                       =>  #{action_klass}"}
       let(:verb) { :delete }
       let(:path) { '/posts/:posts_id/comments/:id'}
 

@@ -1,13 +1,13 @@
 require_relative '../../../domain/<%= @resource_name %>/create'
 
 RSpec.describe <%= @resource_klass %>::Create do
-  subject(:command) { described_class.new(params, listeners) }
+  subject(:action) { described_class.new(params, listeners) }
 
   let(:params) { { title: 'title', description: 'description' } }
   let(:listeners) { [] }
 
   describe '#execute' do
-    subject(:execute) { command.execute }
+    subject(:execute) { action.execute }
 
     let(:new_<%= @entity_name %>) { instance_double(<%= @entity_klass %>, valid?: valid?) }
 

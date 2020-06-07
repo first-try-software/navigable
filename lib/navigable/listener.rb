@@ -1,15 +1,15 @@
 # frozen-string-literal: true
 
-require_relative './command'
+require_relative './action'
 
 module Navigable
   class Listener
-    def self.listen_to_all_commands
-      Navigable::Command.add_default_listener(self)
+    def self.listen_to_all_actions
+      Navigable::Action.add_default_listener(self)
     end
 
-    def self.listen_to(command_klass)
-      command_klass.add_listener(self)
+    def self.listen_to(action_klass)
+      action_klass.add_listener(self)
     end
 
     def on_success(entity); end

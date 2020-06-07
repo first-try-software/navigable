@@ -1,11 +1,11 @@
 # frozen-string-literal: true
 
-require_relative '../application_command'
+require_relative '../application_action'
 require_relative './<%= @entity_name %>'
 require_relative './repository'
 
 module <%= @resource_klass %>
-  class Update < ApplicationCommand
+  class Update < ApplicationAction
     def execute
       return failed_to_find(missing_<%= @entity_name %>) if existing_<%= @entity_name %>.nil?
       return failed_to_validate(edited_<%= @entity_name %>) unless edited_<%= @entity_name %>.valid?

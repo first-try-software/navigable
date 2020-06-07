@@ -1,11 +1,11 @@
 # frozen-string-literal: true
 
-require_relative '../application_command'
+require_relative '../application_action'
 require_relative './<%= @entity_name %>'
 require_relative './repository'
 
 module <%= @resource_klass %>
-  class Show < ApplicationCommand
+  class Show < ApplicationAction
     def execute
       return failed_to_find(missing_<%= @entity_name %>) if found_<%= @entity_name %>.nil?
 

@@ -1,13 +1,13 @@
 require_relative '../../../domain/<%= @resource_name %>/show'
 
 RSpec.describe <%= @resource_klass %>::Show do
-  subject(:command) { described_class.new(params, listeners) }
+  subject(:action) { described_class.new(params, listeners) }
 
   let(:params) { { id: 123 } }
   let(:listeners) { [] }
 
   describe '#execute' do
-    subject(:execute) { command.execute }
+    subject(:execute) { action.execute }
 
     before do
       allow(<%= @resource_klass %>::Repository).to receive(:find).and_return(found_<%= @entity_name %>)
