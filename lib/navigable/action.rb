@@ -26,27 +26,27 @@ module Navigable
 
         def failed_to_validate(entity)
           listeners.each { |listener| listener.on_failure_to_validate(entity) }
-          render status: 400, json: { error: "Invalid parameters for entity: #{entity.inspect}" }
+          render status: 400, json: { error: "Invalid parameters for entity: #{entity}" }
         end
 
         def failed_to_find(entity)
           listeners.each { |listener| listener.on_failure_to_find(entity) }
-          render status: 404, json: { error: "Entity not found: #{entity.inspect}" }
+          render status: 404, json: { error: "Entity not found: #{entity}" }
         end
 
         def failed_to_create(entity)
           listeners.each { |listener| listener.on_failure_to_create(entity) }
-          render status: 500, json: { error: "There was a problem creating the entity: #{entity.inspect}" }
+          render status: 500, json: { error: "There was a problem creating the entity: #{entity}" }
         end
 
         def failed_to_update(entity)
           listeners.each { |listener| listener.on_failure_to_update(entity) }
-          render status: 500, json: { error: "There was a problem updating the entity: #{entity.inspect}" }
+          render status: 500, json: { error: "There was a problem updating the entity: #{entity}" }
         end
 
         def failed_to_delete(entity)
           listeners.each { |listener| listener.on_failure_to_delete(entity) }
-          render status: 500, json: { error: "There was a problem deleting the entity: #{entity.inspect}" }
+          render status: 500, json: { error: "There was a problem deleting the entity: #{entity}" }
         end
 
         def render(response_params = {})
