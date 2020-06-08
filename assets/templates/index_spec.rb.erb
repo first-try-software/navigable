@@ -1,7 +1,7 @@
 require_relative '../../../domain/<%= @resource_name %>/index'
 
 RSpec.describe <%= @resource_klass %>::Index do
-  subject(:action) { described_class.new(params, listeners) }
+  subject(:action) { described_class.new(request_params: params, listeners: listeners) }
 
   let(:params) { {} }
   let(:listeners) { [] }

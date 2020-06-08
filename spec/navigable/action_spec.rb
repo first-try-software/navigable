@@ -70,6 +70,8 @@ RSpec.describe Navigable::Action do
   end
 
   describe '.call' do
+    subject(:call) { action_klass.call(env) }
+
     let(:env) do
       {
         'parsed_body' => parsed_body,
@@ -78,22 +80,22 @@ RSpec.describe Navigable::Action do
     end
 
     let(:rack_request) do
-      instance_double(Rack::Request, params: form_params)
+      instance_double(Rack::Request, params: form_params, accept_media_types: accept_media_types)
     end
 
+    let(:accept_media_types) { [] }
     let(:form_params) { {} }
     let(:parsed_body) { {} }
     let(:url_params) { {} }
 
     before do
       allow(Rack::Request).to receive(:new).and_return(rack_request)
+      allow(action_klass).to receive(:new).and_call_original
     end
 
     context 'when there are no params' do
       context 'when a responds_with_method has NOT been configured' do
         context 'and there is an execute method' do
-          subject(:call) { action_klass.call(env) }
-
           let(:no_params_action) do
             instance_double(action_klass, execute: Navigable::Response.new({}))
           end
@@ -104,8 +106,11 @@ RSpec.describe Navigable::Action do
             call
           end
 
-          it 'instantiates a action' do
-            expect(action_klass).to have_received(:new).with({})
+          it 'instantiates an action' do
+            expect(action_klass).to have_received(:new).with(
+              request_params: {},
+              request_headers: a_kind_of(Hash)
+            )
           end
 
           it 'calls execute on the action' do
@@ -124,24 +129,21 @@ RSpec.describe Navigable::Action do
     end
 
     context 'when there are params' do
-      subject(:call) { action_klass.call(env) }
-
       let(:form_params) { { search: 'toast' } }
       let(:parsed_body) { { 'title' => 'title', 'description' => 'description' } }
       let(:url_params) { { id: '123' } }
 
-      before do
-        allow(action_klass).to receive(:new).and_call_original
-      end
-
-      it 'instantiates a action' do
+      it 'instantiates an action' do
         call
 
         expect(action_klass).to have_received(:new).with(
-          search: 'toast',
-          title: 'title',
-          description: 'description',
-          id: '123'
+          request_params: {
+            search: 'toast',
+            title: 'title',
+            description: 'description',
+            id: '123'
+          },
+          request_headers: a_kind_of(Hash)
         )
       end
 
@@ -214,6 +216,42 @@ RSpec.describe Navigable::Action do
 
         it 'renders a successful response' do
           expect(call).to match_array([500, { 'Content-Type' => 'application/json' }, [a_string_matching(/"error":.*deleting/)]])
+        end
+      end
+    end
+
+    context 'when there are headers' do
+      context 'and the accept_media_types are empty' do
+        let(:accept_media_types) { [] }
+        let(:preferred_media_type) { nil }
+
+        it 'instantiates an action' do
+          call
+
+          expect(action_klass).to have_received(:new).with(
+            request_params: a_kind_of(Hash),
+            request_headers: {
+              accept_media_types: accept_media_types,
+              preferred_media_type: preferred_media_type
+            }
+          )
+        end
+      end
+
+      context 'and the accept_media_types are NOT empty' do
+        let(:accept_media_types) { ['application/json', 'text/html'] }
+        let(:preferred_media_type) { 'application/json' }
+
+        it 'instantiates an action' do
+          call
+
+          expect(action_klass).to have_received(:new).with(
+            request_params: a_kind_of(Hash),
+            request_headers: {
+              accept_media_types: accept_media_types,
+              preferred_media_type: preferred_media_type
+            }
+          )
         end
       end
     end

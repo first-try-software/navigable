@@ -4,6 +4,8 @@ PATH
     navigable (0.1.0)
       hanami-router (= 2.0.0.alpha3)
       inflector (~> 0.0.1)
+      rack-abstract-format (~> 0.9.9)
+      rack-accept-media-types (~> 0.9)
       rack-bodyparser (~> 1.0)
       rspec (~> 3.0)
       thor (~> 1.0)
@@ -25,6 +27,8 @@ GEM
       hansi (~> 0.2.0)
       mustermann (= 1.1.1)
     rack (2.2.2)
+    rack-abstract-format (0.9.9)
+    rack-accept-media-types (0.9)
     rack-bodyparser (1.0.0)
       rack
     rack-test (1.1.0)

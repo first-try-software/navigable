@@ -6,10 +6,11 @@ module Navigable
 
     def self.extended(base)
       base.class_eval do
-        attr_reader :params, :listeners
+        attr_reader :params, :headers, :listeners
 
-        def initialize(request_params = {}, listeners = self.class.listeners)
+        def initialize(request_params: {}, request_headers: {}, listeners: self.class.listeners)
           @params = request_params
+          @headers = request_headers
           @listeners = listeners
         end
 
@@ -80,13 +81,17 @@ module Navigable
     end
 
     def call(env)
-      response = self.new(params(env)).public_send(:execute)
+      response = self.new(request_params: params(env), request_headers: headers(env)).public_send(:execute)
       raise InvalidResponse unless response.is_a?(Navigable::Response)
       response.to_rack_response
     end
 
     def params(env)
       Params.new(env).to_h
+    end
+
+    def headers(env)
+      Headers.new(env).to_h
     end
   end
 end

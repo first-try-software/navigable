@@ -25,6 +25,8 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib", "assets"]
 
   spec.add_dependency "hanami-router", "= 2.0.0.alpha3"
+  spec.add_dependency "rack-accept-media-types", "~> 0.9"
+  spec.add_dependency "rack-abstract-format", "~> 0.9.9"
   spec.add_dependency "rack-bodyparser", "~> 1.0"
   spec.add_dependency "thor", "~> 1.0"
   spec.add_dependency "rspec", "~> 3.0"

@@ -108,4 +108,28 @@ RSpec.describe Navigable::Entity do
         .and match(entity.attributes.to_s)
     end
   end
+
+  describe '#valid?' do
+    subject(:valid?) { entity.valid? }
+
+    it { should be true }
+  end
+
+  describe '#merge' do
+    subject(:merge) { entity.merge(attributes) }
+
+    let(:attributes) { { title: 'new title' } }
+
+    it 'merges the attributes with the entity attributes' do
+      expect(merge).to have_attributes(params.merge(attributes))
+    end
+  end
+
+  describe '#to_json' do
+    subject(:to_json) { entity.to_json }
+
+    it 'returns a json representation of the entity' do
+      expect(to_json).to eq(params.to_json)
+    end
+  end
 end

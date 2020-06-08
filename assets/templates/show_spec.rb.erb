@@ -1,7 +1,7 @@
 require_relative '../../../domain/<%= @resource_name %>/show'
 
 RSpec.describe <%= @resource_klass %>::Show do
-  subject(:action) { described_class.new(params, listeners) }
+  subject(:action) { described_class.new(request_params: params, listeners: listeners) }
 
   let(:params) { { id: 123 } }
   let(:listeners) { [] }
