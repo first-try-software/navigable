@@ -10,6 +10,7 @@ require 'thor'
 require 'base64'
 require 'inflector'
 require 'core_extension'
+require 'manufacturable'
 
 require 'navigable/version'
 require 'navigable/generators/new'

@@ -4,7 +4,8 @@ RSpec.describe Navigable::Entity do
   subject(:entity) { entity_klass.new(params) }
 
   let(:entity_klass) do
-    Class.new(Navigable::Entity) do
+    Class.new do
+      extend Navigable::Entity
       attr_accessor :id, :title, :created_at, :updated_at
 
       def initialize(params)

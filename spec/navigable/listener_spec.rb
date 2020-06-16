@@ -1,35 +1,35 @@
 require_relative '../../lib/navigable/listener'
 
 RSpec.describe Navigable::Listener do
-  subject(:listener) { described_class }
+  subject(:listener) { Class.new { extend Navigable::Listener } }
 
-  describe '.listen_to_all_actions' do
-    subject(:listen_to_all_actions) { listener.listen_to_all_actions }
+  describe '.listens_to_all_actions' do
+    subject(:listens_to_all_actions) { listener.listens_to_all_actions }
 
     before do
-      allow(Navigable::Action).to receive(:add_default_listener)
+      allow(listener).to receive(:corresponds_to_all)
 
-      listen_to_all_actions
+      listens_to_all_actions
     end
 
-    it 'delegates management of default listeners to Navigable::Action' do
-      expect(Navigable::Action).to have_received(:add_default_listener).with(listener)
+    it 'delegates management of default listeners to Manufacturable' do
+      expect(listener).to have_received(:corresponds_to_all)
     end
   end
 
-  describe '.listen_to' do
-    subject(:listen_to) { listener.listen_to(action) }
+  describe '.listens_to' do
+    subject(:listens_to) { listener.listens_to(action) }
 
     let(:action) { Class.new { extend Navigable::Action } }
 
     before do
-      allow(action).to receive(:add_listener)
+      allow(listener).to receive(:corresponds_to)
 
-      listen_to
+      listens_to
     end
 
-    it 'delegates management of listeners to actual action object' do
-      expect(action).to have_received(:add_listener).with(listener)
+    it 'delegates management of listeners to Manufacturable' do
+      expect(listener).to have_received(:corresponds_to).with(action, Navigable::Listener::TYPE)
     end
   end
 end

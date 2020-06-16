@@ -8,7 +8,7 @@ module Navigable
       base.class_eval do
         attr_reader :params, :headers, :listeners
 
-        def initialize(request_params: {}, request_headers: {}, listeners: self.class.listeners)
+        def initialize(request_params: {}, request_headers: {}, listeners: build_listeners)
           @params = request_params
           @headers = request_headers
           @listeners = listeners
@@ -19,6 +19,10 @@ module Navigable
         end
 
         private
+
+        def build_listeners
+          Manufacturable.build(Navigable::Listener::TYPE, self.class) || []
+        end
 
         def successfully(entity)
           listeners.each { |listener| listener.on_success(entity) }
@@ -56,28 +60,8 @@ module Navigable
       end
     end
 
-    def listeners
-      (Navigable::Action.default_listener_klasses + listener_klasses).map { |listener| listener.new }
-    end
-
-    def self.default_listener_klasses
-      @default_listener_klasses ||= []
-    end
-
-    def self.add_default_listener(listener)
-      default_listener_klasses << listener
-    end
-
-    def listener_klasses
-      @listener_klasses ||= []
-    end
-
-    def add_listener(listener)
-      listener_klasses << listener
-    end
-
-    def inherited(child)
-      Registrar.new(child, Navigable.app.router).register
+    def register_action
+      Registrar.new(self, Navigable.app.router).register
     end
 
     def call(env)

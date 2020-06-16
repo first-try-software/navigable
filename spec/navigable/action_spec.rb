@@ -28,44 +28,20 @@ RSpec.describe Navigable::Action do
     end
   end
 
-  describe '.inherited' do
+  describe '.register_action' do
     let(:registrar) { instance_double(Navigable::Registrar, register: true) }
     let(:app) { instance_double(Navigable::Application, router: router) }
     let(:router) { instance_double(Hanami::Router) }
-    let(:child) { Class.new(action_klass) }
+    let(:child) { Class.new(action_klass) { register_action } }
 
     before do
       allow(Navigable::Registrar).to receive(:new).and_return(registrar)
       allow(Navigable).to receive(:app).and_return(app)
     end
 
-    it 'registers the child class with the Registrar' do
+    it 'registers the class with the Registrar' do
       expect(Navigable::Registrar).to have_received(:new).with(child, router)
       expect(registrar).to have_received(:register)
-    end
-  end
-
-  describe '.add_default_listener' do
-    let(:default_listener_klass) do
-      Class.new(Navigable::Listener) do
-        listen_to_all_actions
-      end
-    end
-
-    it 'adds a listener to the default listeners array on the module itself' do
-      expect(Navigable::Action.default_listener_klasses).to include(default_listener_klass)
-    end
-  end
-
-  describe '.listen_to' do
-    let(:listener_klass) { Class.new(Navigable::Listener) }
-
-    before do
-      listener_klass.listen_to(action_klass)
-    end
-
-    it 'adds a listener to the listeners array on the class instance' do
-      expect(action_klass.listeners).to include(listener_klass)
     end
   end
 

@@ -3,20 +3,29 @@
 require_relative './action'
 
 module Navigable
-  class Listener
-    def self.listen_to_all_actions
-      Navigable::Action.add_default_listener(self)
+  module Listener
+    TYPE = :__observer__
+
+    def self.extended(base)
+      base.include(ListenerInterface)
+      base.extend(Manufacturable::Item)
     end
 
-    def self.listen_to(action_klass)
-      action_klass.add_listener(self)
+    def listens_to_all_actions
+      corresponds_to_all
     end
 
-    def on_success(entity); end
-    def on_failure_to_validate(entity); end
-    def on_failure_to_find(entity); end
-    def on_failure_to_create(entity); end
-    def on_failure_to_update(entity); end
-    def on_failure_to_delete(entity); end
+    def listens_to(action_klass)
+      corresponds_to(action_klass, TYPE)
+    end
+  end
+
+  module ListenerInterface
+    def on_success(*args); end
+    def on_failure_to_validate(*args); end
+    def on_failure_to_find(*args); end
+    def on_failure_to_create(*args); end
+    def on_failure_to_update(*args); end
+    def on_failure_to_delete(*args); end
   end
 end
