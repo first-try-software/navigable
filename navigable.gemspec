@@ -31,7 +31,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "thor", "~> 1.0"
   spec.add_dependency "rspec", "~> 3.0"
   spec.add_dependency "inflector", "~> 0.0.1"
-  spec.add_dependency "manufacturable", "~> 0.1.0"
+  spec.add_dependency "manufacturable", "~> 1.0"
 
   spec.add_development_dependency "bundler", "~> 2.0"
   spec.add_development_dependency "rake", "~> 12.0"
