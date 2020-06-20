@@ -24,14 +24,10 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib", "assets"]
 
-  spec.add_dependency "hanami-router", "= 2.0.0.alpha3"
-  spec.add_dependency "rack-accept-media-types", "~> 0.9"
-  spec.add_dependency "rack-abstract-format", "~> 0.9.9"
-  spec.add_dependency "rack-bodyparser", "~> 1.0"
+  spec.add_dependency "manufacturable", "~> 1.3"
   spec.add_dependency "thor", "~> 1.0"
+  spec.add_dependency "inflection", "~> 1.0"
   spec.add_dependency "rspec", "~> 3.0"
-  spec.add_dependency "inflector", "~> 0.0.1"
-  spec.add_dependency "manufacturable", "~> 1.0"
 
   spec.add_development_dependency "bundler", "~> 2.0"
   spec.add_development_dependency "rake", "~> 12.0"

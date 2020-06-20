@@ -26,10 +26,6 @@ module Navigable
       end
     end
 
-    # def inherited(child)
-    #   child.instance_variable_set(:@attr_accessors, @attr_accessors)
-    # end
-
     def attr_accessor(*attrs)
       attr_accessors.push(*attrs)
       super

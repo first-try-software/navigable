@@ -1,5 +1,3 @@
-require_relative '../../lib/navigable/entity'
-
 RSpec.describe Navigable::Entity do
   subject(:entity) { entity_klass.new(params) }
 
