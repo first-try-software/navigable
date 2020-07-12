@@ -2,24 +2,6 @@
 
 # Navigable
 
-## TODO
-
-* Try Navigable with other web frameworks
-* Reintroduce generators
-  - be navigable new APP
-  - be navigable generate domain DOMAIN
-  - be navigable generate resource DOMAIN RESOURCE FIELD FIELD ...
-* Use API objects to declare public interfaces for domains
-* Validate our approach to the repository pattern
-  - Compare to Hanami
-* Accepted parameters
-  - Helper method for commands
-
-* Make project public
-* Add to CI
-* Add to CodeClimate
-* Release gem
-
 ## Installation
 
 Add this line to your application's Gemfile:
