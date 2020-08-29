@@ -7,8 +7,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Alan Ridlehoover", "Fito von Zastrow"]
   spec.email         = ["alan@ridlehoover.com", "adolfovon@gmail.com"]
 
-  spec.summary       = %q{Ahoy! Navigable is a simple, restful framework for API development.}
-  spec.description   = %q{We hold these truths to be self-evident, that not all objects are created equal, that poorly structured code leads to poorly tested code, and that poorly tested code leads to rigid software and fearful engineers.\n\nWe believe a framework should break free of this tyranny. It should be simple, restful, testable, and fast. It can be opinionated. But, it should leverage convention to guide us toward well structured, well tested, maleable code that is truly navigable.}
+  spec.summary       = %q{Ahoy! Navigable will get you there!}
+  spec.description   = %q{We hold these truths to be self-evident, that not all objects are created equal, that poorly structured code leads to poorly tested code, and that poorly tested code leads to rigid software and fearful engineers.\n\nWe believe a framework should break free of this tyranny. It should be simple, testable, and fast. It can be opinionated. But, it should leverage SOLID principles to guide us toward well structured, well tested, maleable code that is truly navigable.}
   spec.homepage      = "https://github.com/first_try/navigable"
   spec.license       = "MIT"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.7.0")
@@ -25,15 +25,10 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib", "assets"]
 
   spec.add_dependency "manufacturable", "~> 1.3"
-  spec.add_dependency "thor", "~> 1.0"
-  spec.add_dependency "inflection", "~> 1.0"
-  spec.add_dependency "rspec", "~> 3.0"
 
   spec.add_development_dependency "bundler", "~> 2.0"
   spec.add_development_dependency "rake", "~> 12.0"
+  spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "rspec_junit_formatter", "~>0.4"
   spec.add_development_dependency "simplecov", "~>0.16"
-  spec.add_development_dependency "rack-test", "~>1.1"
-  spec.add_development_dependency "ruby-debug-ide"
-  spec.add_development_dependency "debase"
 end
