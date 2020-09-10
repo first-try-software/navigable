@@ -34,4 +34,17 @@ RSpec.describe Navigable::Observer do
       expect(observer_klass).to have_received(:corresponds_to).with(command, Navigable::Observer::TYPE)
     end
   end
+
+  describe '#observed_command_key' do
+    subject(:observed_command_key) { obeserver_instance.observed_command_key }
+
+    let(:obeserver_instance) { Manufacturable.build(Navigable::Observer::TYPE, command_key) }
+    let(:command_key) { :command_key }
+
+    before { observer_klass.observes(command_key) }
+
+    it 'returns the observer\'s manufacturable_item_key' do
+      expect(observed_command_key).to eq(command_key)
+    end
+  end
 end
