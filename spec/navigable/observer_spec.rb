@@ -35,6 +35,26 @@ RSpec.describe Navigable::Observer do
     end
   end
 
+  describe '#initialize' do
+    context 'when params are NOT passed' do
+      subject(:observer) { observer_klass.new }
+
+      it 'defaults to an empty hash' do
+        expect(observer.params).to eq({})
+      end
+    end
+
+    context 'when params are passed' do
+      subject(:observer) { observer_klass.new(params: params) }
+
+      let(:params) { 'params' }
+
+      it 'sets params' do
+        expect(observer.params).to eq(params)
+      end
+    end
+  end
+
   describe '#observed_command_key' do
     subject(:observed_command_key) { obeserver_instance.observed_command_key }
 

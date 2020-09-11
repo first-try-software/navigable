@@ -21,6 +21,12 @@ module Navigable
       end
 
       base.class_eval do
+        attr_reader :params
+
+        def initialize(params: {})
+          @params = params
+        end
+
         def observed_command_key
           manufacturable_item_key
         end

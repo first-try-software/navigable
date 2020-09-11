@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    navigable (0.1.0)
+    navigable (0.2.0)
       manufacturable (~> 1.4)
 
 GEM

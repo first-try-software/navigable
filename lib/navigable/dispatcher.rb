@@ -25,7 +25,7 @@ module Navigable
     end
 
     def observers
-      Manufacturable.build_all(Observer::TYPE, key).push(resolver)
+      Manufacturable.build_all(Observer::TYPE, key, params: params).push(resolver)
     end
 
     def command

@@ -44,7 +44,11 @@ RSpec.describe Navigable::Dispatcher do
     it 'delegates to the observer factory to build observers' do
       expect(Manufacturable)
         .to have_received(:build_all)
-        .with(Navigable::Observer::TYPE, key)
+        .with(
+          Navigable::Observer::TYPE,
+          key,
+          params: params
+        )
     end
 
     it 'delegates to the command factory to build a command' do
