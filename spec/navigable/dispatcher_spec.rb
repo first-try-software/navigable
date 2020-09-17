@@ -17,7 +17,7 @@ RSpec.describe Navigable::Dispatcher do
     it 'delegates to an instance of dispatcher' do
       expect(described_class)
         .to have_received(:new)
-        .with(key, params: params, resolver: a_kind_of(Navigable::NullResolver))
+        .with(key, params: params, resolver: a_kind_of(Navigable::BasicResolver))
       expect(dispatcher_instance)
         .to have_received(:dispatch)
     end

@@ -1,12 +1,12 @@
 # frozen-string-literal: true
 
-require 'navigable/null_resolver'
+require 'navigable/basic_resolver'
 require 'navigable/observer'
 require 'navigable/command'
 
 module Navigable
   class Dispatcher
-    def self.dispatch(key, params: {}, resolver: NullResolver.new)
+    def self.dispatch(key, params: {}, resolver: BasicResolver.new)
       self.new(key, params: params, resolver: resolver).dispatch
     end
 
