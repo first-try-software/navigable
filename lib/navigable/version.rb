@@ -1,5 +1,5 @@
 # frozen-string-literal: true
 
 module Navigable
-  VERSION = "0.3.1"
+  VERSION = "1.0.0"
 end
