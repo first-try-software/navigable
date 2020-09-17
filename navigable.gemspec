@@ -7,8 +7,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Alan Ridlehoover", "Fito von Zastrow"]
   spec.email         = ["navigable@firsttry.software"]
 
-  spec.summary       = %q{Ahoy! Navigable will get you there!}
-  spec.description   = %q{We hold these truths to be self-evident, that not all objects are created equal, that poorly structured code leads to poorly tested code, and that poorly tested code leads to rigid software and fearful engineers. We believe a framework should break free of this tyranny. It should be simple, testable, and fast. It can be opinionated. But, it should leverage SOLID principles to guide us toward well structured, well tested, maleable code that is truly navigable.}
+  spec.summary       = %q{Ahoy! Welcome aboard Navigable!}
+  spec.description   = %q{A stand-alone tool for isolating business logic from external interfaces and cross-cutting concerns. Navigable composes self-configured command and observer objects to allow you to extend your business logic without modifying it. Navigable is compatible with any Ruby-based application development framework, including Rails, Hanami, and Sinatra.}
   spec.homepage      = "https://firsttry.software"
   spec.license       = "MIT"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
