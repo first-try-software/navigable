@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.description   = %q{We hold these truths to be self-evident, that not all objects are created equal, that poorly structured code leads to poorly tested code, and that poorly tested code leads to rigid software and fearful engineers. We believe a framework should break free of this tyranny. It should be simple, testable, and fast. It can be opinionated. But, it should leverage SOLID principles to guide us toward well structured, well tested, maleable code that is truly navigable.}
   spec.homepage      = "https://firsttry.software"
   spec.license       = "MIT"
-  spec.required_ruby_version = Gem::Requirement.new(">= 2.7.0")
+  spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/first-try-software/navigable"
