@@ -2,6 +2,8 @@
 
 # Navigable
 
+[![Gem Version](https://badge.fury.io/rb/navigable.svg)](https://badge.fury.io/rb/navigable) [![Build Status](https://travis-ci.org/first-try-software/navigable.svg?branch=main)](https://travis-ci.org/first-try-software/navigable) [![Maintainability](https://api.codeclimate.com/v1/badges/33ca28cb17e1b512e006/maintainability)](https://codeclimate.com/github/first-try-software/navigable/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/33ca28cb17e1b512e006/test_coverage)](https://codeclimate.com/github/first-try-software/navigable/test_coverage)
+
 Navigable is a family of gems that together provide all the tools you need to build fast, testable, and reliable JSON and/or GraphQL based APIs with isolated, composable business logic. The gems include:
 
 <table style="margin: 20px 0">
