@@ -49,8 +49,6 @@ An extension of Navigable Server for building GraphQL APIs.
 
 <img style="width: 600px; display: block; margin: 0 auto;" alt="Lighthouse" src="https://raw.githubusercontent.com/first-try-software/navigable/main/assets/lighthouse.png">
 
-<br>
-
 # The Navigable Charter
 
 We hold these truths to be self-evident, that not all objects are created equal, that poorly structured code leads to poorly tested code, and that poorly tested code leads to rigid software and fearful engineers.
@@ -164,11 +162,13 @@ Here are a few things to look for in the code above:
 
 * Use the `observes_all_commands` statement (as shown in the `Monitor` class) for cross-cutting concerns. It tells Navigable to send messages to the observer no matter which command was executed.
 
+For a deeper look at the core concepts introduced by Navigable, please have a look at our [wiki][wiki].
+
 ## Feedback
 
 We are really excited about Navigable! We think it solves the problem of seperating business logic from the web interface, persistence layer, and even cross-cutting concerns in an elegant and simple way.
 
-We sincerely hope you'll download Navigable and play with it! If you do, please send us a note to [navigable@firsttry.software][mail] to give us your thoughts!
+We're thrilled you're checking out Navigable! If you have any questions or comments, please feel free to reach out to [navigable@firsttry.software][mail].
 
 ## Installation
 
@@ -210,3 +210,4 @@ Everyone interacting in the Navigable project's codebases, issue trackers, chat 
 [ocp]: https://en.wikipedia.org/wiki/Open–closed_principle
 [ddd]: https://en.wikipedia.org/wiki/Domain-driven_design
 [mail]: mailto:navigable@firsttry.software
+[wiki]: https://github.com/first-try-software/navigable/wiki
