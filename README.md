@@ -17,6 +17,15 @@ A stand-alone tool for isolating business logic from external interfaces and cro
 </td>
 </tr>
 <tr height="140">
+<td width="130"><img alt="Compass" src="https://raw.githubusercontent.com/first-try-software/navigable/main/assets/sextant.png"></td>
+<td>
+
+**[Navigable Router][router]** *(coming soon)*<br>
+A simple, highly-performant, Rack-based router.
+
+</td>
+</tr>
+<tr height="140">
 <td width="130"><img alt="Compass" src="https://raw.githubusercontent.com/first-try-software/navigable/main/assets/compass.png"></td>
 <td>
 
@@ -211,3 +220,4 @@ Everyone interacting in the Navigable project's codebases, issue trackers, chat 
 [ddd]: https://en.wikipedia.org/wiki/Domain-driven_design
 [mail]: mailto:navigable@firsttry.software
 [wiki]: https://github.com/first-try-software/navigable/wiki
+[router]: https://github.com/first-try-software/navigable-router
