@@ -11,7 +11,7 @@ Navigable is a family of gems that together provide all the tools you need to bu
 <td width="130"><img alt="Clipper Ship" src="https://raw.githubusercontent.com/first-try-software/navigable/main/assets/clipper.png"></td>
 <td>
 
-**Navigable**<br>
+**[Navigable][navigable]**<br>
 A stand-alone tool for isolating business logic from external interfaces and cross-cutting concerns. Navigable composes self-configured command and observer objects to allow you to extend your business logic without modifying it. Navigable is compatible with any Ruby-based application development framework, including Rails, Hanami, and Sinatra.
 
 </td>
@@ -29,8 +29,8 @@ A simple, highly-performant, Rack-based router.
 <td width="130"><img alt="Compass" src="https://raw.githubusercontent.com/first-try-software/navigable/main/assets/compass.png"></td>
 <td>
 
-**Navigable Server** *(coming soon)*<br>
-A Rack-based web server for building Navigable-backed applications.
+**[Navigable Server][server]** *(coming soon)*<br>
+A Rack-based server for building Ruby and Navigable web applications.
 
 </td>
 </tr>
@@ -220,4 +220,6 @@ Everyone interacting in the Navigable project's codebases, issue trackers, chat 
 [ddd]: https://en.wikipedia.org/wiki/Domain-driven_design
 [mail]: mailto:navigable@firsttry.software
 [wiki]: https://github.com/first-try-software/navigable/wiki
+[navigable]: https://github.com/first-try-software/navigable
 [router]: https://github.com/first-try-software/navigable-router
+[server]: https://github.com/first-try-software/navigable-server
