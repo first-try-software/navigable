@@ -25,11 +25,11 @@ module Navigable
     end
 
     def observers
-      Manufacturable.build_all(Observer::TYPE, key, params: params).push(resolver)
+      Manufacturable.build_all(Observer::TYPE, key) { |observer| observer.inject(params: params) }.push(resolver)
     end
 
     def command
-      Manufacturable.build_one(Command::TYPE, key, params: params, observers: observers)
+      Manufacturable.build_one(Command::TYPE, key) { |command| command.inject(params: params, observers: observers) }
     end
   end
 end

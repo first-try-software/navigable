@@ -31,12 +31,12 @@ RSpec.describe Navigable::Dispatcher do
     let(:params) { 'params' }
     let(:resolver) { instance_double('resolver', resolve: true) }
     let(:observers) { [observer] }
-    let(:observer) { instance_double('observer') }
-    let(:command) { instance_double('command', execute: true) }
+    let(:observer) { instance_double('observer', inject: true) }
+    let(:command) { instance_double('command', execute: true, inject: true) }
 
     before do
-      allow(Manufacturable).to receive(:build_all).and_return(observers)
-      allow(Manufacturable).to receive(:build_one).and_return(command)
+      allow(Manufacturable).to receive(:build_all).and_yield(observer).and_return(observers)
+      allow(Manufacturable).to receive(:build_one).and_yield(command).and_return(command)
 
       dispatch
     end
@@ -46,9 +46,12 @@ RSpec.describe Navigable::Dispatcher do
         .to have_received(:build_all)
         .with(
           Navigable::Observer::TYPE,
-          key,
-          params: params
+          key
         )
+    end
+
+    it 'injects params into the observers' do
+      expect(observer).to have_received(:inject).with(params: params)
     end
 
     it 'delegates to the command factory to build a command' do
@@ -56,10 +59,12 @@ RSpec.describe Navigable::Dispatcher do
         .to have_received(:build_one)
         .with(
           Navigable::Command::TYPE,
-          key,
-          params: params,
-          observers: including(observer, resolver)
+          key
         )
+    end
+
+    it 'injects params into the observers' do
+      expect(command).to have_received(:inject).with(params: params, observers: including(observer, resolver))
     end
 
     it 'executes the command' do

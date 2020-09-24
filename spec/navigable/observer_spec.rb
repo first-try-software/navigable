@@ -35,9 +35,13 @@ RSpec.describe Navigable::Observer do
     end
   end
 
-  describe '#initialize' do
+  describe '#inject' do
+    let(:observer) { observer_klass.new }
+
     context 'when params are NOT passed' do
-      subject(:observer) { observer_klass.new }
+      subject(:inject) { observer.inject }
+
+      before { inject }
 
       it 'defaults to an empty hash' do
         expect(observer.params).to eq({})
@@ -45,9 +49,11 @@ RSpec.describe Navigable::Observer do
     end
 
     context 'when params are passed' do
-      subject(:observer) { observer_klass.new(params: params) }
+      subject(:inject) { observer.inject(params: params) }
 
       let(:params) { 'params' }
+
+      before { inject }
 
       it 'sets params' do
         expect(observer.params).to eq(params)

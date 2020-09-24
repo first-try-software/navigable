@@ -23,7 +23,7 @@ module Navigable
       base.class_eval do
         attr_reader :params
 
-        def initialize(params: {})
+        def inject(params: {})
           @params = params
         end
 
