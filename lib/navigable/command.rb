@@ -4,6 +4,8 @@ require 'navigable/observable'
 
 module Navigable
   module Command
+    class NotFoundError < StandardError; end
+
     TYPE = :__command__
     EXECUTE_NOT_IMPLEMENTED_MESSAGE = 'Class must implement `execute` method.'
 

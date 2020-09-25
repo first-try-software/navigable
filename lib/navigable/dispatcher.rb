@@ -29,6 +29,10 @@ module Navigable
     end
 
     def command
+      build_command.tap { |command| raise Navigable::Command::NotFoundError unless command }
+    end
+
+    def build_command
       Manufacturable.build_one(Command::TYPE, key) { |command| command.inject(params: params, observers: observers) }
     end
   end
