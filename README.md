@@ -35,15 +35,6 @@ A Rack-based server for building Ruby and Navigable web applications.
 </td>
 </tr>
 <tr height="140">
-<td width="130"><img alt="Telescope" src="https://raw.githubusercontent.com/first-try-software/navigable/main/assets/telescope.png"></td>
-<td>
-
-**Navigable API** *(coming soon)*<br>
-An extension of Navigable Server for building restful JSON APIs.
-
-</td>
-</tr>
-<tr height="140">
 <td width="130"><img alt="Map" src="https://raw.githubusercontent.com/first-try-software/navigable/main/assets/map.png"></td>
 <td>
 
