@@ -1,4 +1,4 @@
-RSpec.describe Navigable::BasicResolver do
+RSpec.describe Navigable::NullResolver do
   subject(:resolver) { described_class.new }
 
   describe '#resolve' do

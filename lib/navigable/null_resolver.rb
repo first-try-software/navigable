@@ -3,7 +3,7 @@
 require 'navigable/resolver'
 
 module Navigable
-  class BasicResolver
+  class NullResolver
     extend Navigable::Resolver
 
     def resolve
