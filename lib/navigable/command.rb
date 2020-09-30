@@ -11,25 +11,27 @@ module Navigable
 
     def self.extended(base)
       base.extend(Manufacturable::Item)
+      base.extend(ClassMethods)
       base.include(Observable)
+      base.include(InstanceMethods)
+    end
 
-      base.instance_eval do
-        def corresponds_to(key)
-          super(key, TYPE)
-        end
+    module ClassMethods
+      def corresponds_to(key)
+        super(key, TYPE)
+      end
+    end
+
+    module InstanceMethods
+      attr_reader :params, :observers
+
+      def inject(params: {}, observers: [])
+        @params = params
+        @observers = observers
       end
 
-      base.class_eval do
-        attr_reader :params, :observers
-
-        def inject(params: {}, observers: [])
-          @params = params
-          @observers = observers
-        end
-
-        def execute
-          raise NotImplementedError.new(EXECUTE_NOT_IMPLEMENTED_MESSAGE)
-        end
+      def execute
+        raise NotImplementedError.new(EXECUTE_NOT_IMPLEMENTED_MESSAGE)
       end
     end
   end

@@ -8,28 +8,30 @@ module Navigable
 
     def self.extended(base)
       base.extend(Manufacturable::Item)
+      base.extend(ClassMethods)
       base.include(ObserverInterface)
+      base.include(InstanceMethods)
+    end
 
-      base.instance_eval do
-        def observes_all_commands
-          corresponds_to_all(TYPE)
-        end
-
-        def observes(key)
-          corresponds_to(key, TYPE)
-        end
+    module ClassMethods
+      def observes_all_commands
+        corresponds_to_all(TYPE)
       end
 
-      base.class_eval do
-        attr_reader :params
+      def observes(key)
+        corresponds_to(key, TYPE)
+      end
+    end
 
-        def inject(params: {})
-          @params = params
-        end
+    module InstanceMethods
+      attr_reader :params
 
-        def observed_command_key
-          manufacturable_item_key
-        end
+      def inject(params: {})
+        @params = params
+      end
+
+      def observed_command_key
+        manufacturable_item_key
       end
     end
   end

@@ -9,22 +9,24 @@ module Navigable
 
     def self.extended(base)
       base.extend(Manufacturable::Item)
+      base.extend(ClassMethods)
       base.include(ObserverInterface)
+      base.include(InstanceMethods)
+    end
 
-      base.instance_eval do
-        def default_resolver
-          default_manufacturable(TYPE)
-        end
-
-        def resolves(key)
-          corresponds_to(key, TYPE)
-        end
+    module ClassMethods
+      def default_resolver
+        default_manufacturable(TYPE)
       end
 
-      base.class_eval do
-        def resolve
-          raise NotImplementedError.new(RESOLVE_NOT_IMPLEMENTED_MESSAGE)
-        end
+      def resolves(key)
+        corresponds_to(key, TYPE)
+      end
+    end
+
+    module InstanceMethods
+      def resolve
+        raise NotImplementedError.new(RESOLVE_NOT_IMPLEMENTED_MESSAGE)
       end
     end
   end
