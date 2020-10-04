@@ -1,39 +1,29 @@
 # frozen-string-literal: true
 
+require 'navigable/observer_map'
+require 'navigable/executor'
+
 module Navigable
   module Observable
     OBSERVERS_NOT_IMPLEMENTED_MESSAGE = 'Class must implement `observers` method.'
+    RESOLVER_NOT_IMPLEMENTED_MESSAGE = 'Class must implement `resolver` method.'
 
     def observers
       raise NotImplementedError.new(OBSERVERS_NOT_IMPLEMENTED_MESSAGE)
     end
 
-    def successfully(*args)
-      observers.each { |observer| observer.on_success(*args) }
+    def resolver
+      raise NotImplementedError.new(RESOLVER_NOT_IMPLEMENTED_MESSAGE)
     end
 
-    def failed_to_validate(*args)
-      observers.each { |observer| observer.on_failure_to_validate(*args) }
-    end
+    ObserverMap::METHODS.each_pair do |observable_method, observer_method|
+      define_method(observable_method) do |*args, **kwargs|
+        observers.each do |observer|
+          Navigable::Executor.execute { observer.send(observer_method, *args, **kwargs) }
+        end
 
-    def failed_to_find(*args)
-      observers.each { |observer| observer.on_failure_to_find(*args) }
-    end
-
-    def failed_to_create(*args)
-      observers.each { |observer| observer.on_failure_to_create(*args) }
-    end
-
-    def failed_to_update(*args)
-      observers.each { |observer| observer.on_failure_to_update(*args) }
-    end
-
-    def failed_to_delete(*args)
-      observers.each { |observer| observer.on_failure_to_delete(*args) }
-    end
-
-    def failed(*args)
-      observers.each { |observer| observer.on_failure(*args) }
+        resolver.send(observer_method, *args, **kwargs)
+      end
     end
   end
 end

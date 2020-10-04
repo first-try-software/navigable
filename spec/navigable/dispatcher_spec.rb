@@ -81,7 +81,7 @@ RSpec.describe Navigable::Dispatcher do
       before { dispatch }
 
       it 'injects params into the observers' do
-        expect(command).to have_received(:inject).with(params: params, observers: including(observer, resolver))
+        expect(command).to have_received(:inject).with(params: params, observers: [observer], resolver: resolver)
       end
 
       it 'executes the command' do

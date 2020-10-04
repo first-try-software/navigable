@@ -9,24 +9,42 @@ RSpec.describe Navigable::Observable do
     end
   end
 
-  context 'when the observable class implements observers' do
-    subject(:observable_klass) { Class.new { include Navigable::Observable; attr_accessor :observers } }
+  context 'when the observable class does NOT implement resolver' do
+    subject(:observable_klass) { Class.new { include Navigable::Observable } }
+
+    it 'raises an error' do
+      expect { observable.resolver }.to raise_error(NotImplementedError)
+    end
+  end
+
+  context 'when the observable class implements observers AND resolver' do
+    subject(:observable_klass) { Class.new { include Navigable::Observable; attr_accessor :observers, :resolver } }
 
     let(:args) { 'args' }
     let(:observers) { [observer1, observer2] }
     let(:observer1) { instance_double('observer') }
     let(:observer2) { instance_double('observer') }
+    let(:resolver) { instance_double('resolver') }
 
-    before { observable.observers = observers }
+    before do
+      observable.observers = observers
+      observable.resolver = resolver
+    end
 
     shared_examples 'an observable event' do |event, handler|
       before do
         observers.each { |observer| allow(observer).to receive(handler) }
+        allow(resolver).to receive(handler)
+
         observable.public_send(event, args)
       end
 
-      it 'notifies observers of success' do
+      it 'notifies observers' do
         expect(observers).to all(have_received(handler).with(args))
+      end
+
+      it 'notifies resolver' do
+        expect(resolver).to have_received(handler).with(args)
       end
     end
 

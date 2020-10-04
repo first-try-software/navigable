@@ -23,11 +23,12 @@ module Navigable
     end
 
     module InstanceMethods
-      attr_reader :params, :observers
+      attr_reader :params, :observers, :resolver
 
-      def inject(params: {}, observers: [])
+      def inject(params: {}, observers: [], resolver: NullResolver.new)
         @params = params
         @observers = observers
+        @resolver = resolver
       end
 
       def execute

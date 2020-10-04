@@ -1,5 +1,6 @@
 # frozen-string-literal: true
 
+require 'concurrent'
 require 'manufacturable'
 
 require 'navigable/version'
