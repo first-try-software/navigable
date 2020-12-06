@@ -52,6 +52,10 @@ RSpec.describe Navigable::Observable do
       it_behaves_like 'an observable event', :successfully, :on_success
     end
 
+    describe '#successfully_created' do
+      it_behaves_like 'an observable event', :successfully_created, :on_creation
+    end
+
     describe '#failed_to_validate' do
       it_behaves_like 'an observable event', :failed_to_validate, :on_failure_to_validate
     end

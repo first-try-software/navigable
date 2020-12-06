@@ -10,15 +10,10 @@ module Navigable
       @result
     end
 
-    def on_success(result)
-      @result = result
+    ObserverMap::METHODS.values.each do |observer_method|
+      define_method(observer_method) do |result|
+        @result = result
+      end
     end
-
-    alias_method :on_failure_to_validate, :on_success
-    alias_method :on_failure_to_find, :on_success
-    alias_method :on_failure_to_create, :on_success
-    alias_method :on_failure_to_update, :on_success
-    alias_method :on_failure_to_delete, :on_success
-    alias_method :on_failure, :on_success
   end
 end

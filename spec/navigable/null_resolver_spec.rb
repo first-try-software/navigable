@@ -16,6 +16,16 @@ RSpec.describe Navigable::NullResolver do
       end
     end
 
+    context 'when on_creation is called' do
+      before do
+        resolver.on_creation(result)
+      end
+
+      it 'returns the value passed to on_creation' do
+        expect(resolve).to eq(result)
+      end
+    end
+
     context 'when on_failure_to_find is called' do
       before do
         resolver.on_failure_to_find(result)
