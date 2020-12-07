@@ -17,12 +17,12 @@ module Navigable
     end
 
     ObserverMap::METHODS.each_pair do |observable_method, observer_method|
-      define_method(observable_method) do |*args, **kwargs|
+      define_method(observable_method) do |*args|
         observers.each do |observer|
-          Navigable::Executor.execute { observer.send(observer_method, *args, **kwargs) }
+          Navigable::Executor.execute { observer.send(observer_method, *args) }
         end
 
-        resolver.send(observer_method, *args, **kwargs)
+        resolver.send(observer_method, *args)
       end
     end
   end
