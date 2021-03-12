@@ -4,17 +4,7 @@
 
 [![Gem Version](https://badge.fury.io/rb/navigable.svg)](https://badge.fury.io/rb/navigable) [![Build Status](https://travis-ci.org/first-try-software/navigable.svg?branch=main)](https://travis-ci.org/first-try-software/navigable) [![Maintainability](https://api.codeclimate.com/v1/badges/33ca28cb17e1b512e006/maintainability)](https://codeclimate.com/github/first-try-software/navigable/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/33ca28cb17e1b512e006/test_coverage)](https://codeclimate.com/github/first-try-software/navigable/test_coverage)
 
-<table style="margin: 20px 0">
-<tr height="140">
-<td width="130"><img alt="Clipper Ship" src="https://raw.githubusercontent.com/first-try-software/navigable/main/assets/clipper.png"></td>
-<td>
-
-**[Navigable][navigable]**<br>
 A stand-alone tool for isolating business logic from external interfaces and cross-cutting concerns. Navigable composes self-configured command and observer objects to allow you to extend your business logic without modifying it. Navigable is compatible with any Ruby-based application development framework, including Rails, Hanami, and Sinatra.
-
-</td>
-</tr>
-</table>
 
 <br><br>
 
