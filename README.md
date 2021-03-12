@@ -4,11 +4,9 @@
 
 [![Gem Version](https://badge.fury.io/rb/navigable.svg)](https://badge.fury.io/rb/navigable) [![Build Status](https://travis-ci.org/first-try-software/navigable.svg?branch=main)](https://travis-ci.org/first-try-software/navigable) [![Maintainability](https://api.codeclimate.com/v1/badges/33ca28cb17e1b512e006/maintainability)](https://codeclimate.com/github/first-try-software/navigable/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/33ca28cb17e1b512e006/test_coverage)](https://codeclimate.com/github/first-try-software/navigable/test_coverage)
 
-A stand-alone tool for isolating business logic from external interfaces and cross-cutting concerns. Navigable composes self-configured command and observer objects to allow you to extend your business logic without modifying it. Navigable is compatible with any Ruby-based application development framework, including Rails, Hanami, and Sinatra.
+Navigable is a stand-alone tool for isolating business logic from external interfaces and cross-cutting concerns. Navigable composes self-configured command and observer objects to allow you to extend your business logic without modifying it. Navigable is compatible with any Ruby-based application development framework, including Rails, Hanami, and Sinatra.
 
-<br><br>
-
-<img style="width: 600px; display: block; margin: 0 auto;" alt="Lighthouse" src="https://raw.githubusercontent.com/first-try-software/navigable/main/assets/lighthouse.png">
+<br>
 
 # The Navigable Charter
 
@@ -158,7 +156,6 @@ The gem is available as open source under the terms of the [MIT License](https:/
 ## Code of Conduct
 
 Everyone interacting in the Navigable project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/first-try-software/navigable/blob/main/CODE_OF_CONDUCT.md).
-
 
 [sandi]: https://thoughtbot.com/blog/sandi-metz-rules-for-developers
 [srp]: https://en.wikipedia.org/wiki/Single-responsibility_principle
