@@ -126,7 +126,13 @@ class AlertsController < ApplicationController
   # ...
 
   def create
-    Navigable::Dispatcher.dispatch(:create_alert, params: alert_params)
+    @alert = Navigable::Dispatcher.dispatch(:create_alert, params: alert_params)
+
+    if @alert.persisted?
+      redirect_to @alert, notice: 'Alert successfully created.'
+    else
+      render :new
+    end
   end
 
   # ...
